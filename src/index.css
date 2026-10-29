@@ -1,0 +1,76 @@
+@import 'tailwindcss';
+
+:root {
+  --bg: #050506;
+  --text: #f5f6f8;
+  --text-muted: rgba(245, 246, 248, 0.6);
+  --blue: #2f6bff;
+  --blue-dim: #3d5a99;
+  --blue-soft: rgba(47, 107, 255, 0.18);
+  --border: rgba(255, 255, 255, 0.1);
+  --glass: rgba(255, 255, 255, 0.05);
+
+  --scene-black: #050506;
+  --scene-navy: #0a1440;
+
+  --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --display: 'Space Grotesk', var(--sans);
+
+  font: 16px/150% var(--sans);
+  color-scheme: dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+html {
+  scroll-snap-type: y mandatory;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+  }
+}
+
+::selection {
+  background: var(--blue);
+  color: #fff;
+}
+
+@media (pointer: fine) {
+  html {
+    cursor: none;
+  }
+}
+
+@keyframes blink-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.caret {
+  animation: blink-caret 0.9s step-end infinite;
+}
+
+.font-display {
+  font-family: var(--display);
+}
