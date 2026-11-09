@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+import { useLanguage } from '../../lib/LanguageContext'
 
 // TODO: Amanda — coloque a imagem do savee em /public/work/ (ex.: public/work/tela.jpg)
 // e troque `image` por '/work/tela.jpg'. Enquanto for null, aparece um fundo
@@ -10,7 +11,7 @@ const WORK = {
   url: 'https://savee.com',
   role: 'Software Developer (Full Stack)',
   period: '2024–2026',
-  areas: ['Web', 'iOS', 'Android', 'Backend'],
+  areas: ['Web', 'iOS', 'Android', 'Back-end'],
   regime: 'Tempo integral · Remoto',
   about: 'Plataforma de referências visuais para designers',
   paragraphs: [
@@ -22,6 +23,7 @@ const WORK = {
 }
 
 export default function Work() {
+  const { t } = useLanguage()
   const sectionRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -56,7 +58,7 @@ export default function Work() {
           style={{ x: bigX }}
           className="pointer-events-none absolute bottom-[-4vw] left-0 -z-0 whitespace-nowrap font-display text-[30vw] font-black leading-none tracking-tighter text-white/[0.07]"
         >
-          WORK
+          {t('TRABALHO')}
         </motion.p>
         {/* no desktop só uns 55% do notebook aparecem — o resto sai pela
             esquerda, deixando espaço pro texto */}
@@ -71,7 +73,7 @@ export default function Work() {
 
         <div className="relative flex max-w-2xl flex-col gap-5 md:mr-[5vw] md:max-h-screen md:py-6">
           <Reveal index={0} progress={scrollYProgress}>
-            <p className="text-xs uppercase tracking-[0.3em] text-white/60">Onde trabalhei</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-white/60">{t('Onde trabalhei')}</p>
             <a
               href={WORK.url}
               target="_blank"
@@ -88,20 +90,20 @@ export default function Work() {
             <p className="mt-2 text-base font-medium md:text-lg">
               {WORK.role} <span className="text-white/60">· {WORK.period}</span>
             </p>
-            <p className="mt-1 text-xs text-white/60">{WORK.regime} · <span className="uppercase tracking-[0.15em] text-white/80">{WORK.areas.join(" · ")}</span></p>
-            <p className="mt-3 text-sm text-white/70 md:text-base">{WORK.about}</p>
+            <p className="mt-1 text-xs text-white/60">{t(WORK.regime)} · <span className="uppercase tracking-[0.15em] text-white/80">{WORK.areas.map(t).join(" · ")}</span></p>
+            <p className="mt-3 text-sm text-white/70 md:text-base">{t(WORK.about)}</p>
           </Reveal>
 
           <Reveal index={1} progress={scrollYProgress}>
             <div className="flex flex-col gap-3 text-sm leading-relaxed text-white/90 md:text-[0.95rem]">
               {WORK.paragraphs.map((text) => (
-                <p key={text}>{text}</p>
+                <p key={text}>{t(text)}</p>
               ))}
             </div>
           </Reveal>
 
           <Reveal index={2} progress={scrollYProgress}>
-            <p className="mb-2 text-xs uppercase tracking-[0.3em] text-[var(--blue)]">Tecnologias</p>
+            <p className="mb-2 text-xs uppercase tracking-[0.3em] text-[var(--blue)]">{t('Tecnologias')}</p>
             <ul className="flex flex-wrap gap-2.5">
               {WORK.stack.map((tech) => (
                 <li

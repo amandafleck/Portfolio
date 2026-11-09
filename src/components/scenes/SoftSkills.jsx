@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { useCursor } from '../../lib/CursorContext'
+import { useLanguage } from '../../lib/LanguageContext'
 
 const SKILLS = [
   'Trabalho em equipe',
@@ -17,7 +18,7 @@ const TECH_CATEGORIES = [
     title: 'Front-end',
     items: ['JavaScript', 'TypeScript', 'React.js', 'Next.js', 'Angular', 'React Native'],
   },
-  { title: 'Styles', items: ['HTML', 'CSS', 'Tailwind'] },
+  { title: 'Estilos', items: ['HTML', 'CSS', 'Tailwind'] },
   { title: 'Back-end', items: ['Node.js', 'Python', 'Java', 'GraphQL', 'Stripe'] },
   { title: 'Banco de dados', items: ['PostgreSQL', 'MySQL', 'Drizzle'] },
   { title: 'Testes & DevOps', items: ['Jest', 'Playwright', 'Git'] },
@@ -124,7 +125,7 @@ const FOLDERS = [
     label: 'Cursos',
     subtitle: 'Angular 19 e React 18 / 19 — Udemy',
     period: '2026',
-    lines: ['Angular 19, Curso Completo — Douglas Souza', 'React 18 / 19 Course'],
+    lines: ['Angular 19, Curso Completo — Douglas Souza', 'Curso de React 18 / 19'],
     tab: 0.4,
     fill: '#f4f6ff',
     ink: '#0a1440',
@@ -200,22 +201,22 @@ function useWidth() {
 }
 
 export default function SoftSkills() {
-  return (
-    <section
-      id="softskills"
-      className="flex min-h-screen snap-start flex-col justify-center gap-8 overflow-x-hidden px-6 py-10 md:h-screen md:flex-row md:items-center md:gap-10 md:px-16 md:py-6"
-    >
-      <div className="flex shrink-0 ml-6 flex-col gap-2 md:w-56">
-        <h2 className="mb-1 font-display text-sm uppercase tracking-[0.3em] text-[var(--text-muted)]">
-          Tecnologias
-        </h2>
-        {TECH_CATEGORIES.map((category) => (
-          <TechBox key={category.title} category={category} />
-        ))}
-      </div>
+  const { t } = useLanguage()
 
-      <div className="flex flex-1 flex-col items-center justify-center mt-10 gap-12">
-        {/* Versão anterior (grade de cards) — comentada a pedido da Amanda,
+  return (
+    <section id="softskills" className="relative min-h-screen snap-start overflow-x-clip md:h-[155vh]">
+      <div className="flex min-h-screen flex-col justify-center gap-8 px-6 py-10 md:sticky md:top-0 md:h-screen md:flex-row md:items-center md:gap-10 md:px-16 md:py-6">
+        <div className="ml-6 flex shrink-0 flex-col gap-2 md:w-56">
+          <h2 className="mb-1 font-display text-sm uppercase tracking-[0.3em] text-[var(--text-muted)]">
+            {t('Tecnologias')}
+          </h2>
+          {TECH_CATEGORIES.map((category) => (
+            <TechBox key={category.title} category={category} />
+          ))}
+        </div>
+
+        <div className="mt-10 flex flex-1 flex-col items-center justify-center gap-12">
+          {/* Versão anterior (grade de cards) — comentada a pedido da Amanda,
             substituída pelas "pastinhas" que abrem no hover/clique abaixo.
             FormacaoBox continua definido mais abaixo caso precise voltar.
         <div className="flex flex-wrap items-center justify-center gap-6">
@@ -224,16 +225,17 @@ export default function SoftSkills() {
           ))}
         </div>
         */}
-        <FormacaoStack folders={FOLDERS} />
+          <FormacaoStack folders={FOLDERS} />
 
-        <div className="flex flex-col items-center mt-6 gap-3">
-          <h2 className="font-display text-sm uppercase tracking-[0.3em] text-[var(--text-muted)]">
-            Soft Skills
-          </h2>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {SKILLS.map((skill) => (
-              <SkillBox key={skill} skill={skill} />
-            ))}
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <h2 className="font-display text-sm uppercase tracking-[0.3em] text-[var(--text-muted)]">
+              {t('Soft Skills')}
+            </h2>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {SKILLS.map((skill) => (
+                <SkillBox key={skill} skill={skill} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -243,6 +245,7 @@ export default function SoftSkills() {
 
 function SkillBox({ skill }) {
   const { enterLight, leaveLight } = useCursor()
+  const { t } = useLanguage()
 
   return (
     <motion.div
@@ -253,13 +256,14 @@ function SkillBox({ skill }) {
       className="group cursor-default rounded-lg border border-white/15 px-4 py-3 transition-colors duration-300 hover:border-transparent hover:bg-white"
     >
       <span className="text-sm font-medium text-[var(--text-muted)] opacity-60 transition-all duration-300 group-hover:text-black group-hover:opacity-100">
-        {skill}
+        {t(skill)}
       </span>
     </motion.div>
   )
 }
 
 function FormacaoStack({ folders }) {
+  const { t } = useLanguage()
   const [ref, width] = useWidth()
   const [lifted, setLifted] = useState(null)
   const { setScale, clearScale } = useCursor()
@@ -339,7 +343,7 @@ function FormacaoStack({ folders }) {
                     [{folder.num}]
                   </span>
                   <span className="whitespace-nowrap text-[12px] font-bold uppercase tracking-[0.12em]">
-                    {folder.label}
+                    {t(folder.label)}
                   </span>
                 </div>
 
@@ -351,14 +355,14 @@ function FormacaoStack({ folders }) {
                     style={{ top: TAB_H + 5 }}
                   >
                     <div className="flex items-baseline justify-between gap-4">
-                      <p className="truncate text-xs font-semibold">{folder.subtitle}</p>
+                      <p className="truncate text-xs font-semibold">{t(folder.subtitle)}</p>
                       <p className="shrink-0 text-[10px] font-bold tracking-[0.15em] opacity-60">
                         {folder.period}
                       </p>
                     </div>
                     {/* aparece quando a pasta sobe (hover/toque) */}
                     <p className="mt-1 truncate text-[11px] opacity-70">
-                      {folder.lines.join(' · ')}
+                      {folder.lines.map(t).join(' · ')}
                     </p>
                   </div>
                 )}
@@ -372,6 +376,8 @@ function FormacaoStack({ folders }) {
 
 // conteúdo da pasta da frente — o "Service Files" da referência
 function FrontFolderBody({ folder }) {
+  const { t } = useLanguage()
+
   return (
     <div
       className="absolute inset-x-0 bottom-0 flex flex-col px-7 pb-6"
@@ -379,16 +385,16 @@ function FrontFolderBody({ folder }) {
     >
       <div>
         <h3 className="mb-3 mt-2 font-display text-2xl font-black leading-tight md:text-[1.7rem]">
-          {folder.subtitle}
+          {t(folder.subtitle)}
         </h3>
        
       </div>
        <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.2em] text-[#8fa9ff]">
-          {folder.period} · {folder.lines[1]}
+          {folder.period} · {t(folder.lines[1])}
         </p>
 
       <p className="text-[10px] font-bold uppercase tracking-[0.25em] opacity-60">
-        {folder.lines[0]}
+        {t(folder.lines[0])}
       </p>
     </div>
   )

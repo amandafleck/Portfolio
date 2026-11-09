@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { playKeyTick } from '../../lib/sound'
+import { useLanguage } from '../../lib/LanguageContext'
 
 const EMAIL = 'aa.fleck005@gmail.com'
 
@@ -12,6 +13,7 @@ const SOCIALS = [
 const EASE = [0.16, 1, 0.3, 1]
 
 export default function Contact() {
+  const { t } = useLanguage()
   const [bubbleOpen, setBubbleOpen] = useState(false)
   const openBubble = () => setBubbleOpen(true)
   const closeBubble = () => setBubbleOpen(false)
@@ -38,7 +40,7 @@ export default function Contact() {
             transition={{ duration: 1, ease: EASE }}
             className="block"
           >
-            Contact me
+            {t('Contato')}
           </motion.span>
         </h2>
       </motion.div>
@@ -48,7 +50,7 @@ export default function Contact() {
         <ContactForm onHoverSubmit={openBubble} onLeaveSubmit={closeBubble} />
       </div>
 
-      {/* chamada final: caixa com seta e LET'S TALK */}
+      {/* chamada final: caixa com seta e convite para conversar */}
       <a
         href={`mailto:${EMAIL}`}
         className="group flex mt-12 items-center gap-6 border border-white/25 px-5 py-2 transition-colors duration-300 hover:border-[var(--blue)] hover:bg-[var(--blue)] md:px-8"
@@ -57,7 +59,7 @@ export default function Contact() {
           →
         </span>
         <span className="font-display text-[11vw] font-black uppercase leading-none tracking-tighter text-[var(--blue)] transition-colors duration-300 group-hover:text-white md:text-[6.5vw]">
-          Let's talk
+          {t('Vamos conversar')}
         </span>
       </a>
 
@@ -81,6 +83,7 @@ function Reveal({ children, delay = 0, className = '' }) {
 }
 
 function ContactInfo() {
+  const { t } = useLanguage()
   const label = "mb-1 text-[10px] uppercase tracking-[0.25em] text-[var(--blue)]"
   const value = "text-xs leading-relaxed text-white/80"
   return (
@@ -92,7 +95,7 @@ function ContactInfo() {
         </a>
       </div>
       <div>
-        <p className={label}>Redes</p>
+        <p className={label}>{t('Redes')}</p>
         <div className="flex flex-col gap-1">
           {SOCIALS.map((social) => (
             <a
@@ -112,37 +115,62 @@ function ContactInfo() {
   )
 }
 
-// Sem back-end: o "enviar" abre o app de e-mail já com tudo preenchido.
+// Envia pelo Web3Forms (a chave fica em .env -> VITE_WEB3FORMS_KEY).
 function ContactForm({ onHoverSubmit, onLeaveSubmit }) {
   const [form, setForm] = useState({ name: "", email: "", message: "" })
+  const [status, setStatus] = useState("idle") // idle | sending | sent | error
+  const { language, t } = useLanguage()
   const set = (key) => (event) => setForm((prev) => ({ ...prev, [key]: event.target.value }))
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault()
-    const subject = `Contato pelo portfólio — ${form.name}`
-    const body = `${form.message}
-
-${form.name}
-${form.email}`
-    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    setStatus("sending")
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+          subject: `${language === "pt" ? "Contato pelo portfólio" : "Portfolio contact"} — ${form.name}`,
+          from_name: form.name,
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }),
+      })
+      const data = await response.json()
+      if (!data.success) throw new Error(data.message)
+      setStatus("sent")
+      setForm({ name: "", email: "", message: "" })
+    } catch {
+      setStatus("error")
+    }
   }
 
   return (
     <Reveal delay={0.3}>
-     
       <form onSubmit={submit} className="grid grid-cols-2 gap-3">
-        <Field label="Nome" value={form.name} onChange={set("name")} required />
-        <Field label="E-mail" type="email" value={form.email} onChange={set("email")} required />
-        <Field label="Mensagem" value={form.message} onChange={set("message")} required textarea className="col-span-2" />
+        <Field label={t("Nome")} value={form.name} onChange={set("name")} required />
+        <Field label={t("E-mail")} type="email" value={form.email} onChange={set("email")} required />
+        <Field label={t("Sua mensagem")} value={form.message} onChange={set("message")} required textarea className="col-span-2" />
 
         <button
           type="submit"
+          disabled={status === "sending"}
           onMouseEnter={onHoverSubmit}
           onMouseLeave={onLeaveSubmit}
-          className="col-span-2 bg-[var(--blue)] px-4 py-3 text-xs font-bold uppercase tracking-[0.3em] text-white transition-colors duration-300 hover:bg-white hover:text-[var(--blue)]"
+          className="col-span-2 bg-[var(--blue)] px-4 py-3 text-xs font-bold uppercase tracking-[0.3em] text-white transition-colors duration-300 hover:bg-white hover:text-[var(--blue)] disabled:opacity-60"
         >
-          Enviar mensagem
+          {status === "sending" ? t("Enviando…") : t("Enviar mensagem")}
         </button>
+
+        <p
+          role="status"
+          className={`col-span-2 min-h-5 text-xs ${status === "error" ? "text-red-400" : "text-[var(--blue)]"}`}
+        >
+          {status === "sent" && t("Mensagem enviada ✓ Obrigada pelo contato!")}
+          {status === "error" && t("Não foi possível enviar. Tente de novo ou escreva direto para o e-mail ao lado.")}
+        </p>
       </form>
     </Reveal>
   )

@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useCursor } from '../../lib/CursorContext'
+import { useLanguage } from '../../lib/LanguageContext'
 
 // TODO: Amanda — revise as descrições do GraphQL API e do Encriptador (escritas
 // de forma genérica) e adicione os vídeos em videoSrc.
@@ -45,6 +46,7 @@ const pad = (i) => String(i + 1).padStart(2, '0')
 const HEADER_OFFSET = 110
 
 export default function Projects() {
+  const { t } = useLanguage()
   const rowRefs = useRef([])
   const [active, setActive] = useState(0)
 
@@ -88,7 +90,7 @@ export default function Projects() {
       <header className="sticky top-0 z-10 flex items-center justify-between bg-[var(--bg)]/90 px-6 py-6 backdrop-blur-sm md:px-16">
         <div className="flex items-center gap-6 md:gap-10">
           <h2 className="font-display text-3xl tracking-tight md:text-5xl">
-            PROJECTS
+            {t('PROJETOS')}
           </h2>
 
           <nav className="flex items-center gap-5 md:gap-12">
@@ -143,6 +145,7 @@ export default function Projects() {
 }
 
 function ProjectRow({ project, index, registerRef }) {
+  const { t } = useLanguage()
   const rowRef = useRef(null)
 
   /*
@@ -182,7 +185,7 @@ function ProjectRow({ project, index, registerRef }) {
           {project.title}
         </h3>
         <p className="mt-5 text-sm leading-7 text-[var(--text)] md:ml-5 md:text-[0.95rem]">
-          {project.description}
+          {t(project.description)}
         </p>
       </div>
 
@@ -194,6 +197,7 @@ function ProjectRow({ project, index, registerRef }) {
 }
 
 function VideoPanel({ project }) {
+  const { t } = useLanguage()
   const videoRef = useRef(null)
   const [hovered, setHovered] = useState(false)
 
@@ -244,7 +248,7 @@ function VideoPanel({ project }) {
       ) : (
         <div className="absolute inset-0 flex items-center justify-center px-6 text-center text-xs text-[var(--text-muted)]">
           {/* TODO: Amanda — coloque o vídeo do projeto aqui (videoSrc) */}
-          vídeo em breve
+          {t('vídeo em breve')}
         </div>
       )}
     </motion.div>

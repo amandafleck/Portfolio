@@ -1,11 +1,13 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState } from 'react'
+import { useLanguage } from '../../lib/LanguageContext'
 
 // TODO: Amanda — troque pelo texto real definitivo, se for diferente deste.
 const TEXT =
-  'SOU DESENVOLVEDORA FULL STACK E ESTUDANTE DE SISTEMAS DE INFORMAÇÃO. SEMPRE TIVE CURIOSIDADE EM ENTENDER COMO AS COISAS FUNCIONAM E ENCONTREI NA PROGRAMAÇÃO UMA MANEIRA DE UNIR CRIATIVIDADE E LÓGICA, TRANSFORMANDO IDEIAS EM SOLUÇÕES REAIS. \n TENHO EXPERIÊNCIA COM DIFERENTES ÁREAS DO DESENVOLVIMENTO, ESPECIALMENTE APLICAÇÕES WEB E MOBILE. GOSTO DE APRENDER COISAS NOVAS, EXPERIMENTAR TECNOLOGIAS E PARTICIPAR DA CRIAÇÃO DE PRODUTOS. BUSCO NOVOS DESAFIOS QUE ME PERMITAM COLOCAR MEUS CONHECIMENTOS EM PRÁTICA, TROCAR EXPERIÊNCIAS E CONTINUAR EVOLUINDO COMO DESENVOLVEDORA'
+  'SOU DESENVOLVEDORA FULL STACK E ESTUDANTE DE SISTEMAS DE INFORMAÇÃO. SEMPRE TIVE CURIOSIDADE EM ENTENDER COMO AS COISAS FUNCIONAM E ENCONTREI NA PROGRAMAÇÃO UMA MANEIRA DE UNIR CRIATIVIDADE E LÓGICA, TRANSFORMANDO IDEIAS EM SOLUÇÕES REAIS. \n TENHO EXPERIÊNCIA COM DIFERENTES ÁREAS DO DESENVOLVIMENTO, ESPECIALMENTE APLICAÇÕES WEB E MOBILE. GOSTO DE APRENDER COISAS NOVAS, EXPERIMENTAR TECNOLOGIAS E PARTICIPAR DA CRIAÇÃO DE PRODUTOS. BUSCO NOVOS DESAFIOS QUE ME PERMITAM COLOCAR MEUS CONHECIMENTOS EM PRÁTICA, TROCAR EXPERIÊNCIAS E CONTINUAR EVOLUINDO COMO DESENVOLVEDORA.'
 
-const WORDS = TEXT.split(' ')
+const TEXT_EN =
+  'I AM A FULL STACK DEVELOPER AND AN INFORMATION SYSTEMS STUDENT. I HAVE ALWAYS BEEN CURIOUS ABOUT HOW THINGS WORK AND FOUND IN PROGRAMMING A WAY TO BRING CREATIVITY AND LOGIC TOGETHER, TURNING IDEAS INTO REAL SOLUTIONS. \n I HAVE EXPERIENCE IN DIFFERENT AREAS OF DEVELOPMENT, ESPECIALLY WEB AND MOBILE APPLICATIONS. I ENJOY LEARNING NEW THINGS, EXPLORING TECHNOLOGIES, AND TAKING PART IN BUILDING PRODUCTS. I AM LOOKING FOR NEW CHALLENGES THAT LET ME APPLY MY KNOWLEDGE, EXCHANGE IDEAS, AND KEEP GROWING AS A DEVELOPER.'
 
 // O texto se revela nos primeiros 32% do scroll da seção; depois disso os
 // recortes começam a ser "colados" no mural, um por vez.
@@ -86,6 +88,7 @@ function PhotoSlot({ src, alt, label, className = '' }) {
 function VideoSlot({ src, className = '' }) {
   const ref = useRef(null)
   const [playing, setPlaying] = useState(false)
+  const { t } = useLanguage()
 
   const toggle = () => {
     const video = ref.current
@@ -105,7 +108,7 @@ function VideoSlot({ src, className = '' }) {
     <button
       type="button"
       onClick={toggle}
-      aria-label="Tocar ou pausar o vídeo da palestra"
+      aria-label={t('Tocar ou pausar o vídeo da palestra')}
       className={`relative block w-full overflow-hidden bg-black ${className}`}
     >
       <video
@@ -128,6 +131,8 @@ function VideoSlot({ src, className = '' }) {
 
 /* Conteúdo de cada recorte — cada um com um jeito diferente de papel. */
 function CriatividadeLogica() {
+  const { t } = useLanguage()
+
   return (
     <div className="relative w-64 md:w-96">
       <Tape className="-top-2 rotate-[-4deg]" />
@@ -141,13 +146,12 @@ function CriatividadeLogica() {
           backgroundSize: '18px 18px',
         }}
       >
-        <p className="text-xs uppercase text-[var(--blue)] md:text-sm">criatividade + lógica</p>
+        <p className="text-xs uppercase text-[var(--blue)] md:text-sm">{t('criatividade + lógica')}</p>
         <p className="mt-2 text-sm leading-6 md:text-base md:leading-7">
-          Sempre fui uma pessoa criativa e sempre gostei de matemática, lógica e de
-          encontrar soluções para problemas.
+          {t('Sempre fui uma pessoa criativa e sempre gostei de matemática, lógica e de encontrar soluções para problemas.')}
         </p>
         {/* TODO: Amanda — foto aqui (passe src="/sua-foto.jpg") */}
-        <PhotoSlot label="sua foto aqui" className="mt-4 aspect-[4/3]" />
+        <PhotoSlot label={t('sua foto aqui')} className="mt-4 aspect-[4/3]" />
       
       </div>
     </div>
@@ -156,6 +160,8 @@ function CriatividadeLogica() {
 
 // Folha antiga: papel amarelado e manchado, pautado, com carimbo vermelho.
 function Hackathon() {
+  const { t } = useLanguage()
+
   return (
     <div className="relative w-72 md:w-[25rem]">
       <Paperclip className="-top-5 left-6 rotate-[8deg]" />
@@ -169,20 +175,20 @@ function Hackathon() {
         }}
       >
         <p className="pl-6 text-xs uppercase text-[#8a2d1f] md:text-sm">
-          hackatime taquara · 2º lugar
+          {t('Hackatime Taquara · 2º lugar')}
         </p>
 
         <div className="relative ml-6 mt-4 rotate-[-2deg] border-[6px] border-[#fbf6e6] shadow-md">
           <img
             src="/mural/hackatime-time.png"
-            alt="Participantes do Hackatime Taquara reunidos no auditório"
+            alt={t('Participantes do Hackatime Taquara reunidos no auditório')}
             draggable={false}
             className="pointer-events-none aspect-[4/3] w-full object-cover sepia-[0.35]"
           />
         </div>
 
         <p className="mt-4 pl-6 text-xs leading-[1.7rem] md:text-sm md:leading-[1.7rem]">
-          {HACKATHON_TEXT}
+          {t(HACKATHON_TEXT)}
         </p>
 
      
@@ -193,10 +199,12 @@ function Hackathon() {
 
 // Troféu: PNG com fundo transparente, recortado como adesivo.
 function Trofeu() {
+  const { t } = useLanguage()
+
   return (
     <img
       src="/mural/premio-hackatime.png"
-      alt="Troféu de 2º lugar do Hackatime"
+      alt={t('Troféu de 2º lugar do Hackatime')}
       draggable={false}
       className="pointer-events-none w-40 md:w-56"
       style={{ filter: CUTOUT }}
@@ -205,6 +213,8 @@ function Trofeu() {
 }
 
 function ElasNaTI() {
+  const { t } = useLanguage()
+
   return (
     <div className="relative w-60 md:w-80">
       <span
@@ -214,7 +224,7 @@ function ElasNaTI() {
       <div className="bg-[#fbfbf8] p-3 pb-5 shadow-[0_10px_24px_rgba(0,0,0,0.5)] md:p-4 md:pb-6">
         <img
           src="/mural/palestra.jpg"
-          alt="Amanda palestrando no Elas na TI"
+          alt={t('Amanda palestrando no Elas na TI')}
           draggable={false}
           className="pointer-events-none aspect-[3/4] w-full object-cover object-[30%_30%]"
         />
@@ -222,12 +232,12 @@ function ElasNaTI() {
         {ELAS_VIDEO && <VideoSlot src={ELAS_VIDEO} className="mt-3 aspect-video" />}
 
         <p className="mt-3 text-sm font-bold leading-5 text-[#1b2240] md:text-base">
-          Palestrante no Elas na TI
+          {t('Palestrante no Elas na TI')}
         </p>
-        <p className="text-xs leading-4 text-[#1b2240]/70 md:text-sm">13 de junho · FACCAT</p>
+        <p className="text-xs leading-4 text-[#1b2240]/70 md:text-sm">{t('13 de junho · FACCAT')}</p>
 
         <p className="mt-3 border-t border-dashed border-[#1b2240]/25 pt-3 text-xs leading-5 text-[#1b2240]/85 md:text-sm md:leading-6">
-          {ELAS_TEXT}
+          {t(ELAS_TEXT)}
         </p>
 
         <a
@@ -236,7 +246,7 @@ function ElasNaTI() {
           rel="noreferrer"
           className="mt-3 inline-block border-b border-[#1b2240] text-xs font-bold text-[#1b2240] md:text-sm"
         >
-          Ver o post no Instagram ↗
+          {t('Ver o post no Instagram ↗')}
         </a>
       </div>
     </div>
@@ -245,10 +255,12 @@ function ElasNaTI() {
 
 // Crachá de palestrante: PNG transparente, solto no mural como um recorte.
 function Cracha() {
+  const { t } = useLanguage()
+
   return (
     <img
       src="/mural/cracha-palestrante.png"
-      alt="Crachá de palestrante do Elas na TI — Faccat, 13 de junho"
+      alt={t('Crachá de palestrante do Elas na TI — Faccat, 13 de junho')}
       draggable={false}
       className="pointer-events-none w-36 md:w-52"
       style={{ filter: CUTOUT }}
@@ -297,6 +309,8 @@ const SCRAPS = [
 ]
 
 export default function About() {
+  const { language } = useLanguage()
+  const words = (language === 'en' ? TEXT_EN : TEXT).split(' ')
   const containerRef = useRef(null)
   const stageRef = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -308,8 +322,6 @@ export default function About() {
   const baseOpacity = useTransform(scrollYProgress, [TEXT_END + 0.02, 0.44], [1, 0.16])
   const baseBlur = useTransform(scrollYProgress, [TEXT_END + 0.02, 0.44], [0, 3])
   const baseFilter = useTransform(baseBlur, (b) => `blur(${b}px)`)
-  const hintOpacity = useTransform(scrollYProgress, [0.93, 0.98], [0, 1])
-
   // Ordem de empilhamento: o último recorte tocado fica por cima.
   const [order, setOrder] = useState(() => SCRAPS.map((s) => s.id))
   const bringToFront = (id) =>
@@ -330,12 +342,12 @@ export default function About() {
           />
 
           <p className="whitespace-pre-line font-display max-w-3xl text-xl font-medium leading-relaxed tracking-tight md:text-[1.7rem]">
-            {WORDS.map((word, index) => (
+            {words.map((word, index) => (
               <RevealWord
                 key={`${word}-${index}`}
                 word={word}
                 index={index}
-                total={WORDS.length}
+                total={words.length}
                 scrollYProgress={scrollYProgress}
               />
             ))}
@@ -370,14 +382,28 @@ function Scrap({ scrap, z, scrollYProgress, constraintsRef, onGrab }) {
   const scale = useTransform(appear, [0, 1], [1.6, 1])
   const y = useTransform(appear, [0, 1], [-60, 0])
   const rot = useTransform(appear, [0, 1], [rotate - 14, rotate])
+  // enquanto o recorte ainda não "colou", ele não pode ser tocado nem arrastado
+  const pointerEvents = useTransform(appear, (v) => (v > 0.6 ? "auto" : "none"))
+
+  // posição do arrastar: se a pessoa voltar o scroll antes deste recorte
+  // aparecer, ele volta pro lugar de origem (nada fica solto/bagunçado)
+  const dragX = useMotionValue(0)
+  const dragY = useMotionValue(0)
+  useMotionValueEvent(scrollYProgress, "change", (value) => {
+    if (value < start && (dragX.get() !== 0 || dragY.get() !== 0)) {
+      dragX.set(0)
+      dragY.set(0)
+    }
+  })
 
   return (
     <motion.div
-      style={{ opacity, scale, y, rotate: rot, zIndex: z }}
+      style={{ opacity, scale, y, rotate: rot, zIndex: z, pointerEvents }}
       className={`absolute ${pos}`}
     >
       <motion.div
         drag
+        style={{ x: dragX, y: dragY }}
         dragConstraints={constraintsRef}
         dragElastic={0.08}
         dragMomentum={false}

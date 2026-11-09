@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { SECTIONS, scrollToSection } from '../data/sections'
 import NavIcon from './NavIcon'
+import { useLanguage } from '../lib/LanguageContext'
 
 export default function SideNav() {
+  const { t } = useLanguage()
   const [progress, setProgress] = useState(() =>
     Object.fromEntries(SECTIONS.map((section) => [section.id, 0]))
   )
@@ -63,7 +65,7 @@ export default function SideNav() {
             <NavIcon id={section.id} className="relative z-10 h-5 w-5 text-white" />
 
             <span className="pointer-events-none absolute left-full top-1/2 ml-3 hidden -translate-y-1/2 whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)] opacity-0 transition-opacity duration-150 group-hover:opacity-100 md:block">
-              {section.label}
+              {t(section.label)}
             </span>
           </button>
         )

@@ -75,7 +75,7 @@ export default function Amanda() {
 
   return (
     <section id="amanda" ref={containerRef} className="relative h-[170vh] snap-start">
-      <h1 className="sr-only">Amanda Fleck — Desenvolvedora Full Stack</h1>
+      <h1 className="sr-only">Amanda Fleck — Full Stack Developer</h1>
 
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* Fase 1: o A gigante crescendo com o scroll */}
