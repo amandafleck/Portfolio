@@ -35,7 +35,7 @@ const FORMACAO = [
     key: 'faccat',
     title: 'Sistemas de Informação',
     period: '2025 — 2030',
-    lines: ['Bacharelado — FACCAT', 'Faculdades Integradas de Taquara', '3º semestre'],
+    lines: ['Bacharelado — FACCAT', 'Faculdades Integradas de Taquara', '4º semestre'],
     from: { y: -60 },
   },
   {
@@ -113,7 +113,7 @@ const FOLDERS = [
     label: 'Tester Foundation Level',
     subtitle: 'Certified Tester Foundation Level — BSTQB',
     period: '2025',
-    lines: [''],
+    lines: ['BSTQB'],
     tab: 0.8,
     fill: '#eaefff',
     ink: '#0a1440',
@@ -132,13 +132,13 @@ const FOLDERS = [
 ]
 
 // medidas da pilha (px)
-const STACK_H = 440 // altura total da pilha
+const STACK_H = 500 // altura total da pilha (o que sobra após as abas é a pasta da frente)
 const STACK_TOP = 12 // respiro acima da pasta mais de trás
-const TAB_H = 34 // altura da aba
-const STEP = 58 // distância vertical entre o topo de uma pasta e a próxima
+const TAB_H = 30 // altura da aba
+const STEP = 56 // distância vertical entre o topo de uma pasta e a próxima
 const RADIUS = 20 // cantos do corpo
 const SHOULDER = 14 // curva orgânica que liga a aba ao corpo
-const LIFT = 42 // quanto a pasta de trás sobe no hover
+const LIFT = 34 // quanto a pasta de trás sobe no hover
 
 // Uma pasta = um único path: corpo com cantos arredondados + aba com
 // "ombros" em S, igual pasta de arquivo de verdade.
@@ -203,10 +203,10 @@ export default function SoftSkills() {
   return (
     <section
       id="softskills"
-      className="flex h-screen snap-start flex-col justify-center gap-10 overflow-hidden px-6 py-16 md:flex-row md:items-center md:gap-6 md:px-16"
+      className="flex min-h-screen snap-start flex-col justify-center gap-8 overflow-x-hidden px-6 py-10 md:h-screen md:flex-row md:items-center md:gap-10 md:px-16 md:py-6"
     >
-      <div className="flex shrink-0 flex-col gap-3 md:w-56">
-        <h2 className="mb-2 font-display text-sm uppercase tracking-[0.3em] text-[var(--text-muted)]">
+      <div className="flex shrink-0 ml-6 flex-col gap-2 md:w-56">
+        <h2 className="mb-1 font-display text-sm uppercase tracking-[0.3em] text-[var(--text-muted)]">
           Tecnologias
         </h2>
         {TECH_CATEGORIES.map((category) => (
@@ -214,7 +214,7 @@ export default function SoftSkills() {
         ))}
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-8">
+      <div className="flex flex-1 flex-col items-center justify-center mt-10 gap-12">
         {/* Versão anterior (grade de cards) — comentada a pedido da Amanda,
             substituída pelas "pastinhas" que abrem no hover/clique abaixo.
             FormacaoBox continua definido mais abaixo caso precise voltar.
@@ -226,7 +226,7 @@ export default function SoftSkills() {
         */}
         <FormacaoStack folders={FOLDERS} />
 
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center mt-6 gap-3">
           <h2 className="font-display text-sm uppercase tracking-[0.3em] text-[var(--text-muted)]">
             Soft Skills
           </h2>
@@ -271,7 +271,7 @@ function FormacaoStack({ folders }) {
   return (
     <div
       ref={ref}
-      className="relative mx-auto w-full max-w-[460px] select-none"
+      className="relative mx-auto w-full max-w-[540px] select-none"
       style={{ height: STACK_H }}
       onMouseLeave={() => {
         setLifted(null)
@@ -348,7 +348,7 @@ function FormacaoStack({ folders }) {
                 ) : (
                   <div
                     className="absolute inset-x-0 px-6"
-                    style={{ top: TAB_H + 7 }}
+                    style={{ top: TAB_H + 5 }}
                   >
                     <div className="flex items-baseline justify-between gap-4">
                       <p className="truncate text-xs font-semibold">{folder.subtitle}</p>
@@ -357,7 +357,7 @@ function FormacaoStack({ folders }) {
                       </p>
                     </div>
                     {/* aparece quando a pasta sobe (hover/toque) */}
-                    <p className="mt-2.5 truncate text-[11px] opacity-70">
+                    <p className="mt-1 truncate text-[11px] opacity-70">
                       {folder.lines.join(' · ')}
                     </p>
                   </div>
@@ -374,16 +374,16 @@ function FormacaoStack({ folders }) {
 function FrontFolderBody({ folder }) {
   return (
     <div
-      className="absolute inset-x-0 bottom-0 flex flex-col px-7 pb-5"
-      style={{ top: TAB_H + 18 }}
+      className="absolute inset-x-0 bottom-0 flex flex-col px-7 pb-6"
+      style={{ top: TAB_H + 10 }}
     >
       <div>
-        <h3 className="mt-2 mb-3 font-display text-2xl font-black leading-tight md:text-[1.7rem]">
+        <h3 className="mb-3 mt-2 font-display text-2xl font-black leading-tight md:text-[1.7rem]">
           {folder.subtitle}
         </h3>
        
       </div>
-       <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.2em] text-[#8fa9ff]">
+       <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.2em] text-[#8fa9ff]">
           {folder.period} · {folder.lines[1]}
         </p>
 
@@ -450,7 +450,7 @@ function TechBox({ category }) {
         inkFrom(event, false)
         clearScale()
       }}
-      className="relative overflow-hidden rounded-2xl border border-white/15 p-4"
+      className="relative overflow-hidden rounded-2xl border border-white/15 px-4 py-3"
     >
       <motion.div
         aria-hidden

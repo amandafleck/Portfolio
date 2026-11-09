@@ -3,40 +3,40 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useCursor } from '../../lib/CursorContext'
 
-// TODO: Amanda — troque pelos seus projetos reais (o primeiro já é o texto
-// real do FloodAlert-REACT que veio no seu wireframe; os outros são placeholder)
+// TODO: Amanda — revise as descrições do GraphQL API e do Encriptador (escritas
+// de forma genérica) e adicione os vídeos em videoSrc.
 const PROJECTS = [
   {
-    title: 'FloodAlert-REACT',
+    title: 'Rota — Planejador de viagens',
     description:
-      'Sistema de alerta e auxílio ao resgate em enchentes desenvolvido para participar do Hackathon 2024. Esta plataforma possui um design atrativo criado com React e Material-UI. A plataforma possibilita que os usuários recebam avisos de perigo de acordo com a localização informada e possam enviar pedidos de avisos caso estejam em necessidade, como sem rota de saída por alagamento. Esse aviso compartilha a sua localização em tempo real a cada aviso que é enviado continuamente com um intervalo. O back-end é alimentado por um servidor Node Express e utiliza o MySQL para a gestão do banco de dados.',
+      'Base inicial do planejador de viagens com React, Leaflet, Node/Express e Geoapify. Nesta etapa, os lugares salvos ficam apenas na memória do navegador; não há banco de dados conectado. Funcionalidades: pesquisa de destino via Geoapify Geocoding API; busca de atrações, restaurantes, hotéis e parques próximos via Places API; exibição de descrição e endereço para cada lugar; salvamento de favoritos e marcação independente de vários lugares no mapa; mapa interativo com marcadores dos resultados; inclusão de vários pontos manuais clicando no mapa e dando um nome.',
     videoSrc: null,
     color: '#2f6bff',
   },
   {
-    title: 'Projeto 2',
+    title: 'Next.js PopularMovies',
     description:
-      'Sistema de alerta e auxílio ao resgate em enchentes desenvolvido para participar do Hackathon 2024. Esta plataforma possui um design atrativo criado com React e Material-UI.',
+      'Aplicação simples em Next.js que lista os filmes populares usando uma API GraphQL. Exibe informações como título, sinopse, data de lançamento, diretor e pôster. O projeto é responsivo e possui pequenas animações. Tecnologias: Next.js, TypeScript, TailwindCSS, GraphQL para busca de dados na API e Jest (opcional) para testes automatizados.',
     videoSrc: null,
     color: '#8b5cf6',
   },
   {
-    title: 'Projeto 3',
+    title: 'GraphQL API',
     description:
-      'Sistema de alerta e auxílio ao resgate em enchentes desenvolvido para participar do Hackathon 2024. Esta plataforma possui um design atrativo criado com React e Material-UI.',
+      'API construída com GraphQL, em que o cliente pede exatamente os campos de que precisa em uma única requisição, evitando excesso ou falta de dados. Define um schema tipado com queries e resolvers, e serve de base de dados para aplicações front-end como o PopularMovies.',
     videoSrc: null,
     color: '#14b8a6',
   },
   {
-    title: 'Projeto 4',
+    title: 'Encriptador em Java',
     description:
-      'Sistema de alerta e auxílio ao resgate em enchentes desenvolvido para participar do Hackathon 2024. Esta plataforma possui um design atrativo criado com React e Material-UI.',
+      'Programa em Java que criptografa e descriptografa mensagens com dois clássicos da criptografia: a Cifra de César, que desloca cada letra um número fixo de posições no alfabeto, e a Cifra de Vigenère, que usa uma palavra-chave para variar o deslocamento a cada letra. Útil para entender na prática como funcionam substituição, chave e segurança básica de textos, e por que cifras simples são fáceis de quebrar.',
     videoSrc: null,
     color: '#f97316',
   },
 ]
 
-const LINKEDIN_URL = 'https://www.linkedin.com/in/SEU-PERFIL'
+const LINKEDIN_URL = 'https://www.linkedin.com/in/amanda-fleck-3b14bb340/'
 
 const pad = (i) => String(i + 1).padStart(2, '0')
 

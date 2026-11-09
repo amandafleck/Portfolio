@@ -8,11 +8,13 @@ const WORK = {
   image: null,
   company: 'Savee',
   url: 'https://savee.com',
-  role: 'Software Developer',
+  role: 'Software Developer (Full Stack)',
   period: '2024–2026',
   areas: ['Web', 'iOS', 'Android', 'Backend'],
+  regime: 'Tempo integral · Remoto',
   about: 'Plataforma de referências visuais para designers',
   paragraphs: [
+    'Atuei como desenvolvedora full stack, trabalhando tanto no front-end (web, iOS e Android) quanto no back-end da plataforma, em regime integral e 100% remoto.',
     'Atuação no desenvolvimento e evolução de uma plataforma utilizada por mais de 1 milhão de usuários, produto em produção, com uso contínuo. Participando do desenvolvimento, revisão e testes de funcionalidades.',
     'Por ser um produto feito para designers, também aprofundei meu olhar para design de produto, UI/UX e construção de interfaces.',
   ],
@@ -67,7 +69,7 @@ export default function Work() {
           </motion.div>
         </div>
 
-        <div className="relative flex max-w-xl flex-col gap-6 md:mr-[7vw]">
+        <div className="relative flex max-w-2xl flex-col gap-5 md:mr-[5vw] md:max-h-screen md:py-6">
           <Reveal index={0} progress={scrollYProgress}>
             <p className="text-xs uppercase tracking-[0.3em] text-white/60">Onde trabalhei</p>
             <a
@@ -83,17 +85,15 @@ export default function Work() {
                 ↗
               </span>
             </a>
-            <p className="mt-1 text-base font-medium md:text-lg">
+            <p className="mt-2 text-base font-medium md:text-lg">
               {WORK.role} <span className="text-white/60">· {WORK.period}</span>
             </p>
-            <p className="mt-1 text-sm uppercase tracking-[0.2em] text-white/80">
-              {WORK.areas.join(' · ')}
-            </p>
-            <p className="mt-4 text-base text-white/70 md:text-lg">{WORK.about}</p>
+            <p className="mt-1 text-xs text-white/60">{WORK.regime} · <span className="uppercase tracking-[0.15em] text-white/80">{WORK.areas.join(" · ")}</span></p>
+            <p className="mt-3 text-sm text-white/70 md:text-base">{WORK.about}</p>
           </Reveal>
 
           <Reveal index={1} progress={scrollYProgress}>
-            <div className="flex flex-col gap-4 text-base leading-relaxed text-white/90 md:text-lg">
+            <div className="flex flex-col gap-3 text-sm leading-relaxed text-white/90 md:text-[0.95rem]">
               {WORK.paragraphs.map((text) => (
                 <p key={text}>{text}</p>
               ))}
@@ -101,11 +101,12 @@ export default function Work() {
           </Reveal>
 
           <Reveal index={2} progress={scrollYProgress}>
-            <ul className="flex flex-wrap gap-2">
+            <p className="mb-2 text-xs uppercase tracking-[0.3em] text-[var(--blue)]">Tecnologias</p>
+            <ul className="flex flex-wrap gap-2.5">
               {WORK.stack.map((tech) => (
                 <li
                   key={tech}
-                  className="rounded-full border border-white/40 px-3 py-1 text-xs font-medium md:text-sm"
+                  className="rounded-full border border-[var(--blue)] bg-[var(--blue-soft)] px-3.5 py-1 text-sm font-bold text-white shadow-[0_0_14px_rgba(47,107,255,0.25)] md:text-base"
                 >
                   {tech}
                 </li>

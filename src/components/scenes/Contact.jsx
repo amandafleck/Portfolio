@@ -4,12 +4,9 @@ import { playKeyTick } from '../../lib/sound'
 
 const EMAIL = 'aa.fleck005@gmail.com'
 
-// TODO: Amanda — troque pelos seus links reais
 const SOCIALS = [
-  { label: 'LinkedIn', href: 'https://linkedin.com/' },
-  { label: 'GitHub', href: 'https://github.com/' },
-  { label: 'Instagram', href: 'https://instagram.com/' },
-  { label: 'E-mail', href: `mailto:${EMAIL}` },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/amanda-fleck-3b14bb340/' },
+  { label: 'GitHub', href: 'https://github.com/amandafleck' },
 ]
 
 const EASE = [0.16, 1, 0.3, 1]
@@ -22,38 +19,47 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative flex min-h-screen snap-start flex-col justify-center gap-10 overflow-hidden px-6 py-20 md:gap-14 md:px-16"
+      className="relative flex min-h-screen snap-start flex-col gap-6 overflow-hidden px-8 py-8 md:h-screen md:px-24 md:py-7"
     >
-      {/* título gigante — cada linha entra por um lado */}
-      <h2
-        onMouseEnter={openBubble}
-        onMouseLeave={closeBubble}
-        className="font-display text-[15vw] font-black uppercase leading-[0.82] tracking-tighter text-[var(--blue)] md:text-[10.5vw]"
+      {/* título gigante + texto curto à direita */}
+      <motion.div
+        initial="hide"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.3 }}
+        className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-10"
       >
-        <motion.span
-          initial={{ x: '-70%', opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 1.1, ease: EASE }}
-          className="block"
+        <h2
+          onMouseEnter={openBubble}
+          onMouseLeave={closeBubble}
+          className="overflow-hidden font-display text-[24vw] font-black uppercase leading-[0.85] tracking-tighter text-[var(--blue)] md:text-[14vw]"
         >
-          Let&apos;s work
-        </motion.span>
-        <motion.span
-          initial={{ x: '70%', opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 1.1, ease: EASE, delay: 0.12 }}
-          className="block text-right"
-        >
-          together.
-        </motion.span>
-      </h2>
+          <motion.span
+            variants={{ hide: { y: "100%" }, show: { y: 0 } }}
+            transition={{ duration: 1, ease: EASE }}
+            className="block"
+          >
+            Contact me
+          </motion.span>
+        </h2>
+      </motion.div>
 
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-20">
+      <div className="grid grid-cols-1 gap-8 border-t border-white/20 pt-6 md:grid-cols-[1fr_1.5fr] md:gap-16">
         <ContactInfo />
         <ContactForm onHoverSubmit={openBubble} onLeaveSubmit={closeBubble} />
       </div>
+
+      {/* chamada final: caixa com seta e LET'S TALK */}
+      <a
+        href={`mailto:${EMAIL}`}
+        className="group flex mt-12 items-center gap-6 border border-white/25 px-5 py-2 transition-colors duration-300 hover:border-[var(--blue)] hover:bg-[var(--blue)] md:px-8"
+      >
+        <span className="text-4xl text-[var(--blue)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-white md:text-6xl">
+          →
+        </span>
+        <span className="font-display text-[11vw] font-black uppercase leading-none tracking-tighter text-[var(--blue)] transition-colors duration-300 group-hover:text-white md:text-[6.5vw]">
+          Let's talk
+        </span>
+      </a>
 
       <AnimatePresence>{bubbleOpen && <MessageBubble />}</AnimatePresence>
     </section>
@@ -65,7 +71,7 @@ function Reveal({ children, delay = 0, className = '' }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.4 }}
+      viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, ease: EASE, delay }}
       className={className}
     >
@@ -75,83 +81,82 @@ function Reveal({ children, delay = 0, className = '' }) {
 }
 
 function ContactInfo() {
+  const label = "mb-1 text-[10px] uppercase tracking-[0.25em] text-[var(--blue)]"
+  const value = "text-xs leading-relaxed text-white/80"
   return (
-    <div className="flex flex-col justify-between gap-10">
-      <Reveal delay={0.2}>
-        <p className="font-display text-5xl font-black leading-[0.95] tracking-tight md:text-7xl">
-          Vamos trabalhar juntos?
-        </p>
-      </Reveal>
-
-      {/* redes em linha, uma do lado da outra */}
-      <Reveal delay={0.3}>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs uppercase tracking-[0.15em]">
-          {SOCIALS.map((social, index) => (
-            <span key={social.label} className="flex items-center gap-4">
-              <a
-                href={social.href}
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:text-[var(--blue)]"
-              >
-                {social.label}
-              </a>
-              {index < SOCIALS.length - 1 && <span className="text-[var(--text-muted)]">—</span>}
-            </span>
+    <Reveal delay={0.15} className=" content-start gap-x-6 gap-y-5 gap-6 md:flex md:flex-col md:gap-x-0 md:gap-y-6">
+      <div>
+        <p className={label}>E-mail</p>
+        <a href={`mailto:${EMAIL}`} className={`${value} break-all transition-colors hover:text-[var(--blue)]`}>
+          {EMAIL}
+        </a>
+      </div>
+      <div>
+        <p className={label}>Redes</p>
+        <div className="flex flex-col gap-1">
+          {SOCIALS.map((social) => (
+            <a
+              key={social.label}
+              href={social.href}
+              target="_blank"
+              rel="noreferrer"
+              className={`${value} w-fit transition-colors hover:text-[var(--blue)]`}
+            >
+              {social.label} ↗
+            </a>
           ))}
         </div>
-      </Reveal>
-    </div>
+      </div>
+      
+    </Reveal>
   )
 }
 
 // Sem back-end: o "enviar" abre o app de e-mail já com tudo preenchido.
 function ContactForm({ onHoverSubmit, onLeaveSubmit }) {
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+  const [form, setForm] = useState({ name: "", email: "", message: "" })
   const set = (key) => (event) => setForm((prev) => ({ ...prev, [key]: event.target.value }))
 
   const submit = (event) => {
     event.preventDefault()
-    const subject = form.subject || `Contato pelo portfólio — ${form.name}`
-    const body = `${form.message}\n\n${form.name}\n${form.email}`
+    const subject = `Contato pelo portfólio — ${form.name}`
+    const body = `${form.message}
+
+${form.name}
+${form.email}`
     window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
   }
 
   return (
-    <Reveal delay={0.35}>
-      <form onSubmit={submit} className="grid grid-cols-2 gap-x-6 gap-y-6">
-        <Field label="Nome" value={form.name} onChange={set('name')} required />
-        <Field label="Empresa / Assunto" value={form.subject} onChange={set('subject')} />
-        <Field label="E-mail" type="email" value={form.email} onChange={set('email')} required className="col-span-2" />
-        <Field label="Mensagem" value={form.message} onChange={set('message')} required textarea className="col-span-2" />
+    <Reveal delay={0.3}>
+     
+      <form onSubmit={submit} className="grid grid-cols-2 gap-3">
+        <Field label="Nome" value={form.name} onChange={set("name")} required />
+        <Field label="E-mail" type="email" value={form.email} onChange={set("email")} required />
+        <Field label="Mensagem" value={form.message} onChange={set("message")} required textarea className="col-span-2" />
 
         <button
           type="submit"
           onMouseEnter={onHoverSubmit}
           onMouseLeave={onLeaveSubmit}
-          className="group col-span-2 mt-2 flex items-center justify-between border-t border-white/20 pt-4 text-left"
+          className="col-span-2 bg-[var(--blue)] px-4 py-3 text-xs font-bold uppercase tracking-[0.3em] text-white transition-colors duration-300 hover:bg-white hover:text-[var(--blue)]"
         >
-          <span className="font-display text-5xl font-black uppercase tracking-tighter transition-colors duration-300 group-hover:text-[var(--blue)] md:text-6xl">
-            Enviar
-          </span>
-          <span className="text-4xl transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[var(--blue)]">
-            ↗
-          </span>
+          Enviar mensagem
         </button>
       </form>
     </Reveal>
   )
 }
 
-function Field({ label, textarea, className = '', ...props }) {
-  const Tag = textarea ? 'textarea' : 'input'
+function Field({ label, textarea, className = "", ...props }) {
+  const Tag = textarea ? "textarea" : "input"
   return (
     <label className={`flex flex-col gap-1 ${className}`}>
-      <span className="text-xs text-[var(--text-muted)]">{label}</span>
+      <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)]">{label}</span>
       <Tag
         {...props}
-        rows={textarea ? 3 : undefined}
-        className="resize-none border-b border-white/25 bg-transparent py-1.5 text-sm outline-none transition-colors focus:border-[var(--blue)]"
+        rows={textarea ? 2 : undefined}
+        className="resize-none border-b border-white/25 bg-transparent px-3 py-2 text-sm outline-none transition-colors focus:border-[var(--blue)]"
       />
     </label>
   )
@@ -171,7 +176,7 @@ function MessageBubble() {
       exit={{ opacity: 0, scale: 0, rotate: 10 }}
       transition={{ type: 'spring', stiffness: 420, damping: 18 }}
       style={{ originX: 0, originY: 1 }}
-      className="pointer-events-none absolute right-[10%] top-[12%] z-30 hidden md:block"
+      className="pointer-events-none absolute right-[8%] top-[8%] z-30 hidden md:block"
     >
       <div className="relative flex items-center gap-2 rounded-[2rem] rounded-bl-md bg-[var(--blue)] px-7 py-5 shadow-[0_20px_50px_rgba(47,107,255,0.35)]">
         {[0, 1, 2].map((dot) => (

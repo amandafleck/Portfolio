@@ -16,7 +16,12 @@ export default function SideNav() {
         return
       }
       const rect = el.getBoundingClientRect()
-      next[section.id] = Math.min(1, Math.max(0, -rect.top / rect.height))
+      const vh = window.innerHeight
+      // seção mais alta que a tela: 0 -> 1 até o fim dela encostar embaixo;
+      // seção de uma tela só (ex.: contato, a última): 0 -> 1 conforme ela entra
+      const raw =
+        rect.height > vh + 2 ? -rect.top / (rect.height - vh) : 1 - rect.top / vh
+      next[section.id] = Math.min(1, Math.max(0, raw))
     })
     setProgress(next)
   }, [])

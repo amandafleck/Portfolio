@@ -1,6 +1,7 @@
 import { motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { playClick, playKeyTick } from '../../lib/sound'
+import MorphLetter from '../MorphLetter'
 
 const TYPED_TAIL = 'ELOPER'
 const TICKER_ITEMS = Array.from({ length: 8 }, (_, i) => i)
@@ -71,6 +72,7 @@ export default function Amanda() {
 
   useEffect(() => () => timeoutsRef.current.forEach(clearTimeout), [])
 
+
   return (
     <section id="amanda" ref={containerRef} className="relative h-[170vh] snap-start">
       <h1 className="sr-only">Amanda Fleck — Desenvolvedora Full Stack</h1>
@@ -79,13 +81,13 @@ export default function Amanda() {
         {/* Fase 1: o A gigante crescendo com o scroll */}
         {phase === 'growing' && (
           <>
-            <motion.span
+            <motion.div
               aria-hidden
-              style={{ scale: letterScale, opacity: letterOpacity }}
-              className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 select-none text-[28vw] font-black leading-none text-[var(--blue)]"
+              style={{ opacity: letterOpacity }}
+              className="pointer-events-none absolute inset-0 z-0"
             >
-              A
-            </motion.span>
+              <MorphLetter scale={letterScale} />
+            </motion.div>
             <motion.div
               aria-hidden
               style={{ opacity: growOverlayOpacity }}
@@ -188,12 +190,14 @@ export default function Amanda() {
           >
             
             <div className="mb-4 flex items-center justify-between text-sm">
-              {/* TODO: Amanda — confirme e-mail e link do LinkedIn */}
+              {/* TODO: Amanda — confirme o e-mail */}
               <a href="mailto:aa.fleck005@gmail.com" className="text-[var(--text-muted)]">
                 aa.fleck005@gmail.com
               </a>
               <a
-                href="https://linkedin.com/"
+                href="https://www.linkedin.com/in/amanda-fleck-3b14bb340/"
+                target="_blank"
+                rel="noreferrer"
                 className="rounded-xl border border-white/30 px-4 py-2 text-xs uppercase tracking-wide text-[var(--text-muted)] transition-colors hover:border-[var(--blue)] hover:text-[var(--blue)]"
               >
                 LinkedIn
