@@ -15,7 +15,7 @@ const TEXT_END = 0.32
 
 // ---- Textos e mídias editáveis ------------------------------------------
 const HACKATHON_TEXT =
-  'Organizado pela Sicredi Caminho das Águas, com apoio do Instituto Taquara Mais e da Faccat. Durante dois dias, os participei de mentorias e palestras sobre: Validação do Problema / Design Thinking, Validação da Solução / Canva, MVP / Prototipação e Pitch.'
+  'Organizado pela Sicredi Caminho das Águas, com apoio do Instituto Taquara Mais e da Faccat. Durante dois dias, participamos de mentorias e palestras sobre: Validação do Problema / Design Thinking, Validação da Solução / Canva, MVP / Prototipação e Pitch. O nosso projeto se chamou Risco Zero.'
 const ELAS_TEXT =
   'Um evento feito para mulheres que querem conhecer, entrar ou crescer na área da tecnologia. Participei como palestrante.'
 const ELAS_POST = 'https://www.instagram.com/p/DY68Q4bET5_/'
@@ -151,7 +151,11 @@ function CriatividadeLogica() {
           {t('Sempre fui uma pessoa criativa e sempre gostei de matemática, lógica e de encontrar soluções para problemas.')}
         </p>
         {/* TODO: Amanda — foto aqui (passe src="/sua-foto.jpg") */}
-        <PhotoSlot label={t('sua foto aqui')} className="mt-4 aspect-[4/3]" />
+        <PhotoSlot
+          src="/perfil.jpg"
+          alt="Amanda Fleck"
+          className="mt-4 aspect-[4/3]"
+        />
       
       </div>
     </div>
@@ -253,6 +257,36 @@ function ElasNaTI() {
   )
 }
 
+// Foto solta com fita e legenda — usada para as fotos do Hackatime.
+function FotoFita({ src, alt, caption, tilt = -2, className = "" }) {
+  return (
+    <div className={`relative ${className}`}>
+      <Tape className="-top-2 rotate-[5deg]" />
+      <div
+        className="bg-[#fbfbf8] p-2 pb-3 shadow-[0_10px_24px_rgba(0,0,0,0.5)]"
+        style={{ transform: `rotate(${tilt}deg)` }}
+      >
+        <img src={src} alt={alt} draggable={false} className="pointer-events-none aspect-[4/3] w-full object-cover" />
+        <p className="mt-2 text-xs font-bold text-[#1b2240] md:text-sm">{caption}</p>
+      </div>
+    </div>
+  )
+}
+
+
+function Pitch() {
+  const { t } = useLanguage()
+  return (
+    <FotoFita
+      src="/mural/hackatime-pitch.png"
+      alt={t("Amanda apresentando o pitch do Risco Zero")}
+      caption={t("Pitch do Risco Zero")}
+      tilt={2}
+      className="w-40 md:w-56"
+    />
+  )
+}
+
 // Crachá de palestrante: PNG transparente, solto no mural como um recorte.
 function Cracha() {
   const { t } = useLanguage()
@@ -305,6 +339,13 @@ const SCRAPS = [
     rotate: 9,
     pos: 'left-[30%] top-[2%] md:right-[2%] md:left-auto md:bottom-[5%] md:top-auto',
     node: <Cracha />,
+  },
+  {
+    id: "pitch",
+    start: 0.93,
+    rotate: 4,
+    pos: "right-[30%] top-[40%] md:left-[21%] md:bottom-[1%] md:right-auto md:top-auto",
+    node: <Pitch />,
   },
 ]
 

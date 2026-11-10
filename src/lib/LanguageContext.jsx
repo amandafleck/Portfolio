@@ -76,8 +76,8 @@ const translations = {
   'Sempre fui uma pessoa criativa e sempre gostei de matemática, lógica e de encontrar soluções para problemas.':
     'I have always been creative and enjoyed math, logic, and finding solutions to problems.',
   'sua foto aqui': 'your photo here',
-  'Organizado pela Sicredi Caminho das Águas, com apoio do Instituto Taquara Mais e da Faccat. Durante dois dias, os participei de mentorias e palestras sobre: Validação do Problema / Design Thinking, Validação da Solução / Canva, MVP / Prototipação e Pitch.':
-    'Organized by Sicredi Caminho das Águas, with support from Instituto Taquara Mais and Faccat. Over two days, participants attended mentoring sessions and talks on problem validation and design thinking, solution validation and Canva, MVPs, prototyping, and pitching.',
+  'Organizado pela Sicredi Caminho das Águas, com apoio do Instituto Taquara Mais e da Faccat. Durante dois dias, participamos de mentorias e palestras sobre: Validação do Problema / Design Thinking, Validação da Solução / Canva, MVP / Prototipação e Pitch. O nosso projeto se chamou Risco Zero.':
+    'Organized by Sicredi Caminho das Águas, with support from Instituto Taquara Mais and Faccat. Over two days, we attended mentoring sessions and talks on problem validation and design thinking, solution validation and Canva, MVPs, prototyping, and pitching. Our project was called Risco Zero.',
   'Participantes do Hackatime Taquara reunidos no auditório':
     'Hackatime Taquara participants gathered in the auditorium',
   'Troféu de 2º lugar do Hackatime': 'Hackatime second-place trophy',
@@ -97,6 +97,10 @@ const translations = {
   'Como te respondo?': 'Your email',
   'Quem é você?': 'Your name',
   'Enviar mensagem': 'Send message',
+  'Equipe do Hackatime Taquara com o troféu e a bandeira da escola': 'Hackatime Taquara team with the trophy and the school flag',
+  'Equipe Risco Zero · 2º lugar': 'Risco Zero team · 2nd place',
+  'Amanda apresentando o pitch do Risco Zero': 'Amanda presenting the Risco Zero pitch',
+  'Pitch do Risco Zero': 'Risco Zero pitch',
   'Enviando…': 'Sending…',
   'Mensagem enviada ✓ Obrigada pelo contato!': 'Message sent ✓ Thanks for reaching out!',
   'Não foi possível enviar. Tente de novo ou escreva direto para o e-mail ao lado.':
