@@ -1,12 +1,7 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import { useLanguage } from '../../lib/LanguageContext'
 
-// TODO: Amanda — coloque a imagem do savee em /public/work/ (ex.: public/work/tela.jpg)
-// e troque `image` por '/work/tela.jpg'. Enquanto for null, aparece um fundo
-// "planeta à noite" feito em CSS.
 const WORK = {
-  image: null,
   company: 'Savee',
   url: 'https://savee.com',
   role: 'Software Developer (Full Stack)',
@@ -14,173 +9,127 @@ const WORK = {
   areas: ['Web', 'iOS', 'Android', 'Back-end'],
   regime: 'Tempo integral · Remoto',
   about: 'Plataforma de referências visuais para designers',
-  paragraphs: [
-    'Atuei como desenvolvedora full stack, trabalhando tanto no front-end (web, iOS e Android) quanto no back-end da plataforma, em regime integral e 100% remoto.',
-    'Atuação no desenvolvimento e evolução de uma plataforma utilizada por mais de 1 milhão de usuários, produto em produção, com uso contínuo. Participando do desenvolvimento, revisão e testes de funcionalidades.',
-    'Por ser um produto feito para designers, também aprofundei meu olhar para design de produto, UI/UX e construção de interfaces.',
+  // cada item vira uma linha numerada, no estilo "01 / TÍTULO + texto"
+  items: [
+    {
+      title: 'Desenvolvimento full stack',
+      text: 'Atuei como desenvolvedora full stack, trabalhando tanto no front-end (web, iOS e Android) quanto no back-end da plataforma.',
+    },
+    {
+      title: 'Plataforma em produção',
+      text: 'Atuação no desenvolvimento e evolução de uma plataforma utilizada por mais de 1 milhão de usuários. Participando do desenvolvimento, revisão e testes de funcionalidades.',
+    },
+    {
+      title: 'Design de produto',
+      text: 'Por ser um produto feito para designers, também aprofundei meu olhar para design de produto, UI/UX e construção de interfaces.',
+    },
   ],
   stack: ['TypeScript', 'React', 'Next.js', 'Node.js', 'GraphQL', 'PostgreSQL', 'Drizzle', 'Stripe', 'Playwright'],
 }
 
+const EASE = [0.16, 1, 0.3, 1]
+const pad = (i) => String(i + 1).padStart(2, '0')
+
+function Reveal({ children, delay = 0, className = '' }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.8, ease: EASE, delay }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 export default function Work() {
   const { t } = useLanguage()
-  const sectionRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  })
-
-  // o notebook começa de costas, dá a volta e para de frente, crescendo
-  const rotateY = useTransform(scrollYProgress, [0, 0.55], [-200, 0])
-  const rotateX = useTransform(scrollYProgress, [0, 0.55], [18, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.55], [0.55, 1])
-  // no desktop ele gira mais pra dentro da tela e desliza pra esquerda até
-  // ficar meio escondido
-  const [isDesktop, setIsDesktop] = useState(false)
-  useEffect(() => {
-    const mql = window.matchMedia('(min-width: 768px)')
-    const sync = () => setIsDesktop(mql.matches)
-    sync()
-    mql.addEventListener('change', sync)
-    return () => mql.removeEventListener('change', sync)
-  }, [])
-  const x = useTransform(scrollYProgress, [0, 0.55], isDesktop ? ['24vw', '0vw'] : ['0vw', '0vw'])
-  // "SAVEE" gigante no fundo, atravessando a tela conforme o scroll
-  const bigX = useTransform(scrollYProgress, [0, 1], ['30%', '-60%'])
 
   return (
-    <section id="work" ref={sectionRef} className="relative h-[260vh] snap-start">
-      <h2 className="sr-only">Onde trabalhei</h2>
+    <section
+      id="work"
+      className="relative flex min-h-screen snap-start items-center overflow-hidden px-6 py-16 md:h-screen md:px-24 md:py-8"
+    >
+      <h2 className="sr-only">{t('Onde trabalhei')}</h2>
 
-      <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center gap-10 overflow-hidden px-6 md:flex-row md:justify-between md:gap-0 md:px-0">
-        <motion.p
-          aria-hidden
-          style={{ x: bigX }}
-          className="pointer-events-none absolute bottom-[-4vw] left-0 -z-0 whitespace-nowrap font-display text-[30vw] font-black leading-none tracking-tighter text-white/[0.07]"
-        >
-          {t('TRABALHO')}
-        </motion.p>
-        {/* no desktop só uns 55% do notebook aparecem — o resto sai pela
-            esquerda, deixando espaço pro texto */}
-        <div className="relative w-[92vw] shrink-0 md:-ml-[26vw] md:w-[58vw]" style={{ perspective: 2200 }}>
-          <motion.div
-            style={{ x, rotateY, rotateX, scale, transformStyle: 'preserve-3d' }}
-            className="relative"
-          >
-            <Laptop image={WORK.image} />
-          </motion.div>
-        </div>
-
-        <div className="relative flex max-w-2xl flex-col gap-5 md:mr-[5vw] md:max-h-screen md:py-6">
-          <Reveal index={0} progress={scrollYProgress}>
-            <p className="text-xs uppercase tracking-[0.3em] text-white/60">{t('Onde trabalhei')}</p>
+      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 md:grid-cols-[1fr_1fr] md:gap-20">
+        {/* esquerda: título, empresa e tecnologias */}
+        <div className="flex flex-col justify-between gap-8">
+          <Reveal>
+            <p className="font-display text-4xl font-black uppercase leading-[0.95] tracking-tight md:text-6xl">
+              {t('Onde trabalhei')}
+            </p>
             <a
               href={WORK.url}
               target="_blank"
               rel="noreferrer"
-              className="group mt-3 inline-flex items-center gap-1.5"
+              className="group mt-5 inline-flex items-center gap-2"
             >
-              <h3 className="font-display text-2xl font-bold tracking-tight md:text-3xl">
+              <span className="font-display text-2xl font-bold tracking-tight md:text-3xl">
                 {WORK.company}
-              </h3>
+              </span>
               <span className="text-lg transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
                 ↗
               </span>
             </a>
-            <p className="mt-2 text-base font-medium md:text-lg">
+            <p className="mt-2 text-sm font-medium md:text-base">
               {WORK.role} <span className="text-white/60">· {WORK.period}</span>
             </p>
-            <p className="mt-1 text-xs text-white/60">{t(WORK.regime)} · <span className="uppercase tracking-[0.15em] text-white/80">{WORK.areas.map(t).join(" · ")}</span></p>
-            <p className="mt-3 text-sm text-white/70 md:text-base">{t(WORK.about)}</p>
+            <p className="mt-1 text-xs text-white/60">
+              {t(WORK.regime)} ·{' '}
+              <span className="uppercase tracking-[0.15em] text-white/80">
+                {WORK.areas.map(t).join(' · ')}
+              </span>
+            </p>
+            <p className="mt-3 max-w-sm text-sm text-white/70">{t(WORK.about)}</p>
           </Reveal>
 
-          <Reveal index={1} progress={scrollYProgress}>
-            <div className="flex flex-col gap-3 text-sm leading-relaxed text-white/90 md:text-[0.95rem]">
-              {WORK.paragraphs.map((text) => (
-                <p key={text}>{t(text)}</p>
-              ))}
-            </div>
-          </Reveal>
-
-          <Reveal index={2} progress={scrollYProgress}>
-            <p className="mb-2 text-xs uppercase tracking-[0.3em] text-[var(--blue)]">{t('Tecnologias')}</p>
-            <ul className="flex flex-wrap gap-2.5">
-              {WORK.stack.map((tech) => (
-                <li
-                  key={tech}
-                  className="rounded-full border border-[var(--blue)] bg-[var(--blue-soft)] px-3.5 py-1 text-sm font-bold text-white shadow-[0_0_14px_rgba(47,107,255,0.25)] md:text-base"
-                >
-                  {tech}
-                </li>
-              ))}
+          {/* linguagens e tecnologias: grade de botões, intercalando cheio e vazado */}
+          <Reveal delay={0.15}>
+            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-white/70">
+              {t('Tecnologias')}
+            </p>
+            <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {WORK.stack.map((tech, index) => {
+                const filled = (index + Math.floor(index / 3)) % 2 === 0
+                return (
+                  <li
+                    key={tech}
+                    className={`flex items-center justify-center border px-3 py-3 text-center text-[11px] font-bold uppercase tracking-[0.12em] transition-colors duration-300 md:text-xs ${
+                      filled
+                        ? 'border-[#050506] bg-[#050506] bg-white text-[#050506] hover:bg-transparent hover:text-white hover:border-white/70'
+                        : 'border-white/70 bg-transparent text-white hover:bg-white hover:text-[#050506]'
+                    }`}
+                  >
+                    {tech}
+                  </li>
+                )
+              })}
             </ul>
           </Reveal>
+
+          
         </div>
+
+        {/* direita: lista numerada */}
+        <ol className="flex flex-col justify-center">
+          {WORK.items.map((item, index) => (
+            <Reveal key={item.title} delay={0.1 + index * 0.12}>
+              <li className="grid grid-cols-[auto_1fr] gap-x-5 border-t border-white/30 py-5 first:border-t-0 md:py-6">
+                <span className="text-xs text-white/60">[{pad(index)}]</span>
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-[0.1em] md:text-base">
+                    {t(item.title)}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/75">{t(item.text)}</p>
+                </div>
+              </li>
+            </Reveal>
+          ))}
+        </ol>
       </div>
     </section>
-  )
-}
-
-// cada parte do texto entra depois que o notebook termina de virar, uma de cada vez
-function Reveal({ index, progress, children }) {
-  const start = 0.5 + index * 0.1
-  const opacity = useTransform(progress, [start, start + 0.1], [0, 1])
-  const y = useTransform(progress, [start, start + 0.1], [24, 0])
-
-  return <motion.div style={{ opacity, y }}>{children}</motion.div>
-}
-
-function Laptop({ image }) {
-  return (
-    <div style={{ transformStyle: 'preserve-3d' }}>
-      {/* tampa: frente (tela) e verso (alumínio com logo) */}
-      <div className="relative aspect-[16/10] w-full" style={{ transformStyle: 'preserve-3d' }}>
-        <div
-          className="absolute inset-0 rounded-t-[1.6vw] border-[3px] border-[#b9bcc4] bg-black p-[1.4%]"
-          style={{ backfaceVisibility: 'hidden' }}
-        >
-          <div className="absolute left-1/2 top-[0.6%] h-[1.2%] w-[1.2%] -translate-x-1/2 rounded-full bg-[#1c1d22]" />
-          <div className="relative h-full w-full overflow-hidden rounded-[0.4vw]">
-            {image ? (
-              <img src={image} alt="" className="h-full w-full object-cover" />
-            ) : (
-              <PlanetPlaceholder />
-            )}
-          </div>
-        </div>
-
-        <div
-          className="absolute inset-0 flex items-center justify-center rounded-t-[1.6vw] bg-gradient-to-br from-[#d9dce3] via-[#b4b8c1] to-[#8d919b]"
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-        >
-          <span className="font-display text-[5vw] font-black text-white/70 [text-shadow:0_1px_0_rgba(0,0,0,0.15)]">
-            A
-          </span>
-        </div>
-      </div>
-
-      {/* base */}
-      <div className="relative -mx-[6%] h-[3.2%] min-h-2 rounded-b-[2vw] bg-gradient-to-b from-[#e3e5ea] via-[#b9bcc4] to-[#6f737c]">
-        <div className="absolute left-1/2 top-0 h-1/2 w-[14%] -translate-x-1/2 rounded-b-md bg-[#9a9ea7]" />
-      </div>
-    </div>
-  )
-}
-
-function PlanetPlaceholder() {
-  return (
-    <div
-      className="h-full w-full"
-      style={{
-        background: [
-          'radial-gradient(ellipse 120% 90% at 55% 115%, #0b1a3a 55%, transparent 56%)',
-          'radial-gradient(ellipse 125% 95% at 55% 115%, rgba(80,150,255,0.55) 55%, transparent 58%)',
-          'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.5) 0.6px, transparent 1px)',
-          'radial-gradient(circle at 70% 35%, rgba(255,255,255,0.4) 0.6px, transparent 1px)',
-          'linear-gradient(#02040b, #060c1e)',
-        ].join(','),
-        backgroundSize: '100% 100%, 100% 100%, 90px 90px, 130px 130px, 100% 100%',
-      }}
-    />
   )
 }

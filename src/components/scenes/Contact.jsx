@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { playKeyTick } from '../../lib/sound'
 import { useLanguage } from '../../lib/LanguageContext'
 
@@ -12,16 +12,56 @@ const SOCIALS = [
 
 const EASE = [0.16, 1, 0.3, 1]
 
-export default function Contact() {
-  const { t } = useLanguage()
+// A página de contato é renderizada duas vezes (metade esquerda e metade
+// direita, que se abrem como portas no Finale). O estado do formulário e do
+// balãozinho fica aqui em cima, compartilhado pelas duas cópias.
+const ContactContext = createContext(null)
+
+export function ContactProvider({ children }) {
+  const { language } = useLanguage()
+  const [form, setForm] = useState({ name: "", email: "", message: "" })
+  const [status, setStatus] = useState("idle") // idle | sending | sent | error
   const [bubbleOpen, setBubbleOpen] = useState(false)
+
+  // Envia pelo Web3Forms (a chave fica em .env -> VITE_WEB3FORMS_KEY).
+  const submit = async (event) => {
+    event.preventDefault()
+    setStatus("sending")
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+          subject: `${language === "pt" ? "Contato pelo portfólio" : "Portfolio contact"} — ${form.name}`,
+          from_name: form.name,
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }),
+      })
+      const data = await response.json()
+      if (!data.success) throw new Error(data.message)
+      setStatus("sent")
+      setForm({ name: "", email: "", message: "" })
+    } catch {
+      setStatus("error")
+    }
+  }
+
+  const value = { form, setForm, status, submit, bubbleOpen, setBubbleOpen }
+  return <ContactContext.Provider value={value}>{children}</ContactContext.Provider>
+}
+
+export default function Contact({ side }) {
+  const { t } = useLanguage()
+  const { bubbleOpen, setBubbleOpen } = useContext(ContactContext)
   const openBubble = () => setBubbleOpen(true)
   const closeBubble = () => setBubbleOpen(false)
 
   return (
     <section
-      id="contact"
-      className="relative flex min-h-screen snap-start flex-col gap-6 overflow-hidden px-8 py-8 md:h-screen md:px-24 md:py-7"
+      className="relative flex min-h-screen flex-col gap-6 overflow-hidden px-8 py-8 md:h-screen md:px-24 md:py-7"
     >
       {/* título gigante + texto curto à direita */}
       <motion.div
@@ -63,7 +103,7 @@ export default function Contact() {
         </span>
       </a>
 
-      <AnimatePresence>{bubbleOpen && <MessageBubble />}</AnimatePresence>
+      <AnimatePresence>{bubbleOpen && side !== "left" && <MessageBubble />}</AnimatePresence>
     </section>
   )
 }
@@ -115,37 +155,10 @@ function ContactInfo() {
   )
 }
 
-// Envia pelo Web3Forms (a chave fica em .env -> VITE_WEB3FORMS_KEY).
 function ContactForm({ onHoverSubmit, onLeaveSubmit }) {
-  const [form, setForm] = useState({ name: "", email: "", message: "" })
-  const [status, setStatus] = useState("idle") // idle | sending | sent | error
-  const { language, t } = useLanguage()
+  const { form, setForm, status, submit } = useContext(ContactContext)
+  const { t } = useLanguage()
   const set = (key) => (event) => setForm((prev) => ({ ...prev, [key]: event.target.value }))
-
-  const submit = async (event) => {
-    event.preventDefault()
-    setStatus("sending")
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
-          subject: `${language === "pt" ? "Contato pelo portfólio" : "Portfolio contact"} — ${form.name}`,
-          from_name: form.name,
-          name: form.name,
-          email: form.email,
-          message: form.message,
-        }),
-      })
-      const data = await response.json()
-      if (!data.success) throw new Error(data.message)
-      setStatus("sent")
-      setForm({ name: "", email: "", message: "" })
-    } catch {
-      setStatus("error")
-    }
-  }
 
   return (
     <Reveal delay={0.3}>

@@ -152,9 +152,9 @@ function CriatividadeLogica() {
         </p>
         {/* TODO: Amanda — foto aqui (passe src="/sua-foto.jpg") */}
         <PhotoSlot
-          src="/perfil.jpg"
+          src="/mural/criatividade-logica.jpg"
           alt="Amanda Fleck"
-          className="mt-4 aspect-[4/3]"
+          className="mt-4 aspect-[4/3] object-[50%_55%]"
         />
       
       </div>
@@ -379,7 +379,7 @@ export default function About() {
             src="/perfil.jpg"
             alt="Amanda Fleck"
             draggable={false}
-            className="aspect-[3/4] w-48 shrink-0 rounded-2xl object-cover object-[40%_40%] md:w-72"
+            className="aspect-[3/4] w-48 shrink-0 rounded-2xl object-cover object-[50%_35%] md:w-72"
           />
 
           <p className="whitespace-pre-line font-display max-w-3xl text-xl font-medium leading-relaxed tracking-tight md:text-[1.7rem]">

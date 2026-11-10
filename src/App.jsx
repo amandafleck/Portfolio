@@ -7,7 +7,7 @@ import About from './components/scenes/About'
 import SoftSkills from './components/scenes/SoftSkills'
 import Projects from './components/scenes/Projects'
 import Work from './components/scenes/Work'
-import Contact from './components/scenes/Contact'
+import Finale from './components/scenes/Finale'
 import { LanguageProvider, useLanguage } from './lib/LanguageContext'
 
 export default function App() {
@@ -24,7 +24,7 @@ export default function App() {
           <SoftSkills />
           <Work />
           <Projects />
-          <Contact />
+          <Finale />
         </main>
       </CursorProvider>
     </LanguageProvider>
