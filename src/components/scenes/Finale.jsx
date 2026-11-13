@@ -30,8 +30,13 @@ export default function Finale() {
 
   return (
     <ContactProvider>
-      <div id="contact" ref={wrapRef} className="relative h-[270vh] snap-start">
-        <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#050506]">
+      <div id="contact" ref={wrapRef} className="relative snap-start md:h-[270vh]">
+        <div className="relative flex flex-col md:hidden">
+          <Contact />
+          <Eye />
+        </div>
+
+        <div className="hidden md:sticky md:top-0 md:block md:h-screen md:w-full md:overflow-hidden md:bg-[#050506]">
           <motion.div style={{ y: eyeY }} className="absolute inset-0">
             <Eye />
           </motion.div>

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import SideNav from './components/SideNav'
 import CustomCursor from './components/CustomCursor'
 import SceneBackground from './components/SceneBackground'
@@ -9,8 +10,11 @@ import Projects from './components/scenes/Projects'
 import Work from './components/scenes/Work'
 import Finale from './components/scenes/Finale'
 import { LanguageProvider, useLanguage } from './lib/LanguageContext'
+import { startSmoothScroll } from './lib/smoothScroll'
 
 export default function App() {
+  useEffect(() => startSmoothScroll(), [])
+
   return (
     <LanguageProvider>
       <CursorProvider>
@@ -38,7 +42,7 @@ function LanguageToggle() {
     <div
       role="group"
       aria-label="Idioma / Language"
-      className="fixed right-5 top-5 z-[60] flex rounded-full border border-white/20 bg-black/75 p-1 text-xs backdrop-blur-md"
+      className="fixed right-3 top-3 z-[60] sm:right-5 sm:top-5 flex rounded-full border border-white/20 bg-black/75 p-1 text-xs backdrop-blur-md"
     >
       {['pt', 'en'].map((option) => (
         <button

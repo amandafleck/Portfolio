@@ -61,7 +61,7 @@ export default function Contact({ side }) {
 
   return (
     <section
-      className="relative flex min-h-screen flex-col gap-6 overflow-hidden px-8 py-8 md:h-screen md:px-24 md:py-7"
+      className="relative flex min-h-screen flex-col gap-6 px-4 py-10 sm:px-6 md:gap-5 md:px-12 md:py-8 lg:px-24"
     >
       {/* título gigante + texto curto à direita */}
       <motion.div
@@ -73,7 +73,7 @@ export default function Contact({ side }) {
         <h2
           onMouseEnter={openBubble}
           onMouseLeave={closeBubble}
-          className="overflow-hidden font-display text-[24vw] font-black uppercase leading-[0.85] tracking-tighter text-[var(--blue)] md:text-[14vw]"
+          className="overflow-hidden font-display text-[clamp(4rem,14vw,14rem)] font-black uppercase leading-[0.85] tracking-tighter text-[var(--blue)]"
         >
           <motion.span
             variants={{ hide: { y: "100%" }, show: { y: 0 } }}
@@ -85,7 +85,7 @@ export default function Contact({ side }) {
         </h2>
       </motion.div>
 
-      <div className="grid grid-cols-1 gap-8 border-t border-white/20 pt-6 md:grid-cols-[1fr_1.5fr] md:gap-16">
+      <div className="grid min-w-0 grid-cols-1 gap-6 border-t border-white/20 pt-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-10 lg:gap-16">
         <ContactInfo />
         <ContactForm onHoverSubmit={openBubble} onLeaveSubmit={closeBubble} />
       </div>
@@ -93,12 +93,12 @@ export default function Contact({ side }) {
       {/* chamada final: caixa com seta e convite para conversar */}
       <a
         href={`mailto:${EMAIL}`}
-        className="group flex mt-12 items-center gap-6 border border-white/25 px-5 py-2 transition-colors duration-300 hover:border-[var(--blue)] hover:bg-[var(--blue)] md:px-8"
+        className="group mt-2 flex items-center gap-3 border border-white/25 px-3 py-3 transition-colors duration-300 hover:border-[var(--blue)] hover:bg-[var(--blue)] sm:gap-5 sm:px-5 md:mt-6 md:gap-6 md:px-8 md:py-2"
       >
         <span className="text-4xl text-[var(--blue)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-white md:text-6xl">
           →
         </span>
-        <span className="font-display text-[11vw] font-black uppercase leading-none tracking-tighter text-[var(--blue)] transition-colors duration-300 group-hover:text-white md:text-[6.5vw]">
+        <span className="min-w-0 break-words font-display text-[clamp(1.5rem,7.5vw,6.5rem)] font-black uppercase leading-tight tracking-tighter text-[var(--blue)] transition-colors duration-300 group-hover:text-white md:text-[6.5vw]">
           {t('Vamos conversar')}
         </span>
       </a>
@@ -162,7 +162,7 @@ function ContactForm({ onHoverSubmit, onLeaveSubmit }) {
 
   return (
     <Reveal delay={0.3}>
-      <form onSubmit={submit} className="grid grid-cols-2 gap-3">
+      <form onSubmit={submit} className="grid min-w-0 grid-cols-2 gap-3">
         <Field label={t("Nome")} value={form.name} onChange={set("name")} required />
         <Field label={t("E-mail")} type="email" value={form.email} onChange={set("email")} required />
         <Field label={t("Sua mensagem")} value={form.message} onChange={set("message")} required textarea className="col-span-2" />
@@ -192,12 +192,12 @@ function ContactForm({ onHoverSubmit, onLeaveSubmit }) {
 function Field({ label, textarea, className = "", ...props }) {
   const Tag = textarea ? "textarea" : "input"
   return (
-    <label className={`flex flex-col gap-1 ${className}`}>
+    <label className={`flex min-w-0 flex-col gap-1 ${className}`}>
       <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)]">{label}</span>
       <Tag
         {...props}
         rows={textarea ? 2 : undefined}
-        className="resize-none border-b border-white/25 bg-transparent px-3 py-2 text-sm outline-none transition-colors focus:border-[var(--blue)]"
+        className="w-full min-w-0 resize-none border-b border-white/25 bg-transparent px-3 py-2 text-sm outline-none transition-colors focus:border-[var(--blue)]"
       />
     </label>
   )

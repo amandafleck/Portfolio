@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { playClick } from '../../lib/sound'
 import { useLanguage } from '../../lib/LanguageContext'
 import { scrollToSection } from '../../data/sections'
@@ -19,6 +19,9 @@ const clamp = (v, min, max) => Math.min(max, Math.max(min, v))
 export default function Eye() {
   const { t } = useLanguage()
   const ref = useRef(null)
+  const uid = useId().replace(/:/g, "")
+  const beamId = `eye-beam-${uid}`
+  const shapeId = `eye-shape-${uid}`
   const sizeRef = useRef({ w: 1200, h: 800 })
   const [size, setSize] = useState({ w: 1200, h: 800 })
   const [lit, setLit] = useState(false)
@@ -164,7 +167,7 @@ export default function Eye() {
       >
         <defs>
           <radialGradient
-            id="eye-beam"
+            id={beamId}
             gradientUnits="userSpaceOnUse"
             cx={cx}
             cy={cy}
@@ -174,12 +177,12 @@ export default function Eye() {
             <stop offset="0.75" stopColor="#fff" stopOpacity="0.9" />
             <stop offset="1" stopColor="#fff" stopOpacity="0" />
           </radialGradient>
-          <clipPath id="eye-shape">
+          <clipPath id={shapeId}>
             <path d="M-150 0 Q0 -92 150 0 Q0 92 -150 0Z" />
           </clipPath>
         </defs>
 
-        <motion.polygon points={beam} fill="url(#eye-beam)" />
+        <motion.polygon points={beam} fill={`url(#${beamId})`} />
 
         <g transform={`translate(${cx} ${cy}) scale(${scale})`}>
           <circle r="118" fill="#f6b8a4" />
@@ -191,7 +194,7 @@ export default function Eye() {
             style={{ transformOrigin: '0px 0px' }}
           >
             <path d="M-150 0 Q0 -92 150 0 Q0 92 -150 0Z" fill="#fff" />
-            <g clipPath="url(#eye-shape)">
+            <g clipPath={`url(#${shapeId})`}>
               <motion.g style={{ x: pupilX, y: pupilY }}>
                 <circle r="52" fill="#6b9c7d" />
                 <circle r="25" fill="#050506" />
@@ -222,7 +225,7 @@ export default function Eye() {
         </AnimatePresence>
       </motion.div>
 
-      <p className="pointer-events-none absolute inset-x-0 bottom-[6vh] z-10 text-center text-[10px] uppercase tracking-[0.3em] text-white/30">
+      <p className="pointer-events-none absolute inset-x-0 bottom-[6vh] z-10 text-center text-[10px] uppercase tracking-[0.3em] text-white/70 mix-blend-difference">
         {t(lit ? "clique para apagar a luz" : "clique para acender a luz")}
       </p>
 
@@ -232,7 +235,7 @@ export default function Eye() {
           event.stopPropagation()
           scrollToSection('amanda')
         }}
-        className="absolute bottom-6 right-6 z-30 text-[11px] uppercase tracking-[0.25em] text-white/40 transition-colors hover:text-white md:right-16"
+        className="absolute bottom-6 right-6 z-30 text-[11px] uppercase tracking-[0.25em] text-white/80 mix-blend-difference md:right-16"
       >
         {t('↑ voltar ao topo')}
       </button>

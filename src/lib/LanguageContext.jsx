@@ -71,7 +71,10 @@ const translations = {
     'I helped develop and evolve a platform used by over 1 million people, contributing to the development, review, and testing of features for a live product.',
   'Por ser um produto feito para designers, também aprofundei meu olhar para design de produto, UI/UX e construção de interfaces.':
     'As the product was made for designers, I also deepened my understanding of product design, UI/UX, and interface development.',
-  'vídeo em breve': 'video coming soon',
+  'Ver online ↗': 'View live ↗',
+  'Schema tipado': 'Typed schema',
+  'Cifra de César': 'Caesar cipher',
+  'Cifra de Vigenère': 'Vigenère cipher',
   'criatividade + lógica': 'creativity + logic',
   'Sempre fui uma pessoa criativa e sempre gostei de matemática, lógica e de encontrar soluções para problemas.':
     'I have always been creative and enjoyed math, logic, and finding solutions to problems.',

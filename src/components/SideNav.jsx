@@ -48,15 +48,17 @@ export default function SideNav() {
   }, [update])
 
   return (
-    <nav className="fixed left-5 top-1/2 z-50 flex -translate-y-1/2 flex-col overflow-hidden rounded-[12px] bg-black/70 backdrop-blur-md">
+    <nav className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 flex -translate-x-1/2 flex-row overflow-hidden rounded-[12px] bg-black/75 backdrop-blur-md md:bottom-auto md:left-5 md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 md:flex-col">
       {SECTIONS.map((section) => {
         const p = progress[section.id] ?? 0
 
         return (
           <button
             key={section.id}
+            type="button"
+            aria-label={t(section.label)}
             onClick={() => scrollToSection(section.id)}
-            className="group relative flex h-[70px] w-11 items-center justify-center overflow-hidden bg-white/[0.06]"
+            className="group relative flex h-10 w-10 items-center justify-center overflow-hidden bg-white/[0.06] md:h-[70px] md:w-11"
           >
             <span
               className="absolute inset-x-0 top-0 bg-[var(--blue)] transition-[height] duration-150 ease-out"

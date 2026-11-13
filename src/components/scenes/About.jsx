@@ -1,6 +1,7 @@
-import { motion, useMotionValue, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
+import { MotionConfig, motion, useMotionValue, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { useLanguage } from '../../lib/LanguageContext'
+import { Scaled, useFit } from '../../lib/useFit'
 
 // TODO: Amanda — troque pelo texto real definitivo, se for diferente deste.
 const TEXT =
@@ -134,7 +135,7 @@ function CriatividadeLogica() {
   const { t } = useLanguage()
 
   return (
-    <div className="relative w-64 md:w-96">
+    <div className="relative w-full max-w-96">
       <Tape className="-top-2 rotate-[-4deg]" />
       <div
         className="px-6 pb-9 pt-8 text-[#1b2240] shadow-[0_10px_24px_rgba(0,0,0,0.45)]"
@@ -150,13 +151,6 @@ function CriatividadeLogica() {
         <p className="mt-2 text-sm leading-6 md:text-base md:leading-7">
           {t('Sempre fui uma pessoa criativa e sempre gostei de matemática, lógica e de encontrar soluções para problemas.')}
         </p>
-        {/* TODO: Amanda — foto aqui (passe src="/sua-foto.jpg") */}
-        <PhotoSlot
-          src="/mural/criatividade-logica.jpg"
-          alt="Amanda Fleck"
-          className="mt-4 aspect-[4/3] object-[50%_55%]"
-        />
-      
       </div>
     </div>
   )
@@ -167,7 +161,7 @@ function Hackathon() {
   const { t } = useLanguage()
 
   return (
-    <div className="relative w-72 md:w-[25rem]">
+    <div className="relative w-full max-w-[25rem]">
       <Paperclip className="-top-5 left-6 rotate-[8deg]" />
       <div
         className="relative px-6 pb-8 pt-8 text-[#4a3720] shadow-[0_10px_24px_rgba(0,0,0,0.5)] md:px-8"
@@ -210,7 +204,7 @@ function Trofeu() {
       src="/mural/premio-hackatime.png"
       alt={t('Troféu de 2º lugar do Hackatime')}
       draggable={false}
-      className="pointer-events-none w-40 md:w-56"
+      className="pointer-events-none w-40 max-w-full md:w-56"
       style={{ filter: CUTOUT }}
     />
   )
@@ -220,7 +214,7 @@ function ElasNaTI() {
   const { t } = useLanguage()
 
   return (
-    <div className="relative w-60 md:w-80">
+    <div className="relative w-full max-w-80">
       <span
         aria-hidden
         className="absolute left-1/2 top-1 z-10 h-4 w-4 -translate-x-1/2 rounded-full bg-red-500 shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
@@ -282,7 +276,7 @@ function Pitch() {
       alt={t("Amanda apresentando o pitch do Risco Zero")}
       caption={t("Pitch do Risco Zero")}
       tilt={2}
-      className="w-40 md:w-56"
+      className="w-40 max-w-full md:w-56"
     />
   )
 }
@@ -309,42 +303,42 @@ const SCRAPS = [
     id: 'logica',
     start: 0.4,
     rotate: -7,
-    pos: 'left-[1%] top-[4%] md:left-[3%] md:top-[9%]',
+    pos: 'left-[1%] top-[4%] lg:left-[7%] lg:top-[9%]',
     node: <CriatividadeLogica />,
   },
   {
     id: 'hackathon',
     start: 0.5,
     rotate: 3,
-    pos: 'right-[1%] top-[24%] md:left-[27%] md:right-auto md:top-[2%]',
+    pos: 'right-[1%] top-[24%] lg:left-[27%] lg:right-auto lg:top-[2%]',
     node: <Hackathon />,
   },
   {
     id: 'trofeu',
     start: 0.6,
     rotate: 11,
-    pos: 'left-[2%] bottom-[18%] md:left-[44%] md:bottom-[2%]',
+    pos: 'left-[2%] bottom-[18%] lg:left-[44%] lg:bottom-[2%]',
     node: <Trofeu />,
   },
   {
     id: 'elas',
     start: 0.7,
     rotate: -4,
-    pos: 'right-[3%] bottom-[2%] md:right-[14%] md:top-[5%] md:bottom-auto',
+    pos: 'right-[3%] bottom-[2%] lg:right-[14%] lg:top-[5%] lg:bottom-auto',
     node: <ElasNaTI />,
   },
   {
     id: 'cracha',
     start: 0.82,
     rotate: 9,
-    pos: 'left-[30%] top-[2%] md:right-[2%] md:left-auto md:bottom-[5%] md:top-auto',
+    pos: 'left-[30%] top-[2%] lg:right-[2%] lg:left-auto lg:bottom-[5%] lg:top-auto',
     node: <Cracha />,
   },
   {
     id: "pitch",
     start: 0.93,
     rotate: 4,
-    pos: "right-[30%] top-[40%] md:left-[21%] md:bottom-[1%] md:right-auto md:top-auto",
+    pos: "right-[30%] top-[40%] lg:left-[21%] lg:bottom-[1%] lg:right-auto lg:top-auto",
     node: <Pitch />,
   },
 ]
@@ -354,6 +348,7 @@ export default function About() {
   const words = (language === 'en' ? TEXT_EN : TEXT).split(' ')
   const containerRef = useRef(null)
   const stageRef = useRef(null)
+  const fit = useFit(1440, 900, 0.5, 1024)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
@@ -369,20 +364,22 @@ export default function About() {
     setOrder((prev) => (prev[prev.length - 1] === id ? prev : [...prev.filter((x) => x !== id), id]))
 
   return (
-    <section id="about" ref={containerRef} className="relative h-[560vh] snap-start">
-      <div ref={stageRef} className="sticky top-0 h-screen w-full overflow-hidden">
+    <section id="about" ref={containerRef} className="relative min-h-screen lg:h-[620vh]">
+      <div ref={stageRef} className="sticky top-0 hidden h-svh w-full overflow-hidden lg:block">
+        <MotionConfig transformPagePoint={(point) => ({ x: point.x / fit, y: point.y / fit })}>
+        <Scaled scale={fit} className="relative">
         <motion.div
           style={{ opacity: baseOpacity, filter: baseFilter }}
-          className="flex h-full flex-col items-center gap-10 px-6 py-24 md:flex-row md:items-center md:justify-center md:gap-20 md:px-24"
+          className="flex h-full items-center justify-center gap-20 px-24 py-16"
         >
           <img
             src="/perfil.jpg"
             alt="Amanda Fleck"
             draggable={false}
-            className="aspect-[3/4] w-48 shrink-0 rounded-2xl object-cover object-[50%_35%] md:w-72"
+            className="aspect-[3/4] w-72 shrink-0 rounded-2xl object-cover object-[50%_35%]"
           />
 
-          <p className="whitespace-pre-line font-display max-w-3xl text-xl font-medium leading-relaxed tracking-tight md:text-[1.7rem]">
+          <p className="whitespace-pre-line font-display max-w-3xl text-[1.55rem] font-medium leading-relaxed tracking-tight">
             {words.map((word, index) => (
               <RevealWord
                 key={`${word}-${index}`}
@@ -405,7 +402,30 @@ export default function About() {
             onGrab={() => bringToFront(scrap.id)}
           />
         ))}
+        </Scaled>
+        </MotionConfig>
+      </div>
 
+      <div className="mx-auto flex max-w-3xl flex-col gap-10 px-5 py-20 sm:px-6 lg:hidden">
+        <div className="flex flex-col items-center gap-8">
+          <img
+            src="/perfil.jpg"
+            alt="Amanda Fleck"
+            draggable={false}
+            className="aspect-[3/4] w-44 rounded-2xl object-cover object-[50%_35%] sm:w-52"
+          />
+          <p className="whitespace-pre-line font-display text-base font-medium leading-relaxed tracking-tight sm:text-lg">
+            {language === 'en' ? TEXT_EN : TEXT}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 justify-items-center gap-10 min-[520px]:grid-cols-2">
+          {SCRAPS.map((scrap) => (
+            <div key={scrap.id} className="flex w-full justify-center">
+              {scrap.node}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

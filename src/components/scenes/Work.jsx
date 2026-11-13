@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useLanguage } from '../../lib/LanguageContext'
+import { Scaled, useFit } from '../../lib/useFit'
 
 const WORK = {
   company: 'Savee',
@@ -46,15 +47,18 @@ function Reveal({ children, delay = 0, className = '' }) {
 
 export default function Work() {
   const { t } = useLanguage()
+  const fit = useFit(0, 740, 0.65)
 
   return (
-    <section
-      id="work"
-      className="relative flex min-h-screen snap-start items-center overflow-hidden px-6 py-16 md:h-screen md:px-24 md:py-8"
-    >
+    <section id="work" className="relative min-h-screen overflow-x-clip md:min-h-[170vh]">
       <h2 className="sr-only">{t('Onde trabalhei')}</h2>
+      <div className="md:sticky md:top-0 md:h-svh md:overflow-hidden">
+      <Scaled
+        scale={fit}
+        className="flex min-h-screen items-center px-4 py-20 sm:px-6 md:min-h-0 md:py-8 md:pl-24 md:pr-12 lg:pl-28 lg:pr-24"
+      >
 
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 md:grid-cols-[1fr_1fr] md:gap-20">
+      <div className="mx-auto grid w-full max-w-6xl min-w-0 grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-12 lg:gap-20">
         {/* esquerda: título, empresa e tecnologias */}
         <div className="flex flex-col justify-between gap-8">
           <Reveal>
@@ -129,6 +133,8 @@ export default function Work() {
             </Reveal>
           ))}
         </ol>
+      </div>
+      </Scaled>
       </div>
     </section>
   )

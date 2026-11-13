@@ -1,3 +1,5 @@
+import { scrollToElement } from '../lib/smoothScroll'
+
 // As cores precisam ser valores literais (não var(--...)) porque o
 // framer-motion interpola a cor do fundo numericamente entre elas.
 const BLACK = '#050506'
@@ -14,5 +16,5 @@ export const SECTIONS = [
 ]
 
 export function scrollToSection(id) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  scrollToElement(document.getElementById(id))
 }

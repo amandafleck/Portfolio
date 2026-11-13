@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { useCursor } from '../../lib/CursorContext'
 import { useLanguage } from '../../lib/LanguageContext'
+import { Scaled, useFit } from '../../lib/useFit'
 
 const SKILLS = [
   'Trabalho em equipe',
@@ -133,7 +134,7 @@ const FOLDERS = [
 ]
 
 // medidas da pilha (px)
-const STACK_H = 500 // altura total da pilha (o que sobra após as abas é a pasta da frente)
+const STACK_H = 460 // altura total da pilha (o que sobra após as abas é a pasta da frente)
 const STACK_TOP = 12 // respiro acima da pasta mais de trás
 const TAB_H = 30 // altura da aba
 const STEP = 56 // distância vertical entre o topo de uma pasta e a próxima
@@ -202,11 +203,13 @@ function useWidth() {
 
 export default function SoftSkills() {
   const { t } = useLanguage()
+  const fit = useFit(0, 760, 0.65)
 
   return (
-    <section id="softskills" className="relative min-h-screen snap-start overflow-x-clip md:h-[155vh]">
-      <div className="flex min-h-screen flex-col justify-center gap-8 px-6 py-10 md:sticky md:top-0 md:h-screen md:flex-row md:items-center md:gap-10 md:px-16 md:py-6">
-        <div className="ml-6 flex shrink-0 flex-col gap-2 md:w-56">
+    <section id="softskills" className="relative min-h-screen overflow-x-clip md:min-h-[170vh]">
+      <div className="md:sticky md:top-0 md:h-svh md:overflow-hidden">
+      <Scaled scale={fit} className="flex min-h-screen flex-col justify-center gap-8 px-4 py-10 sm:px-6 md:min-h-0 md:flex-row md:items-center md:gap-10 md:px-16 md:py-8 lg:pl-24">
+        <div className="flex shrink-0 flex-col gap-2 md:w-56">
           <h2 className="mb-1 font-display text-sm uppercase tracking-[0.3em] text-[var(--text-muted)]">
             {t('Tecnologias')}
           </h2>
@@ -227,7 +230,7 @@ export default function SoftSkills() {
         */}
           <FormacaoStack folders={FOLDERS} />
 
-          <div className="mt-6 flex flex-col items-center gap-3">
+          <div className="mt-2 flex flex-col items-center gap-3 lg:mt-6">
             <h2 className="font-display text-sm uppercase tracking-[0.3em] text-[var(--text-muted)]">
               {t('Soft Skills')}
             </h2>
@@ -238,6 +241,7 @@ export default function SoftSkills() {
             </div>
           </div>
         </div>
+      </Scaled>
       </div>
     </section>
   )
@@ -253,7 +257,7 @@ function SkillBox({ skill }) {
       transition={{ duration: 0.25, ease: 'easeOut' }}
       onMouseEnter={enterLight}
       onMouseLeave={leaveLight}
-      className="group cursor-default rounded-lg border border-white/15 px-4 py-3 transition-colors duration-300 hover:border-transparent hover:bg-white"
+      className="group cursor-default rounded-lg border border-white/15 px-3 py-2 transition-colors lg:px-4 lg:py-3 duration-300 hover:border-transparent hover:bg-white"
     >
       <span className="text-sm font-medium text-[var(--text-muted)] opacity-60 transition-all duration-300 group-hover:text-black group-hover:opacity-100">
         {t(skill)}
@@ -437,10 +441,12 @@ function TechBox({ category }) {
   const [ink, setInk] = useState({ on: false, x: 0, y: 0, r: 0 })
 
   const inkFrom = (event, on) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    const x = event.clientX - rect.left
-    const y = event.clientY - rect.top
-    const r = Math.hypot(Math.max(x, rect.width - x), Math.max(y, rect.height - y))
+    const el = event.currentTarget
+    const rect = el.getBoundingClientRect()
+    const k = el.offsetWidth / rect.width || 1
+    const x = (event.clientX - rect.left) * k
+    const y = (event.clientY - rect.top) * k
+    const r = Math.hypot(Math.max(x, el.offsetWidth - x), Math.max(y, el.offsetHeight - y))
     setInk({ on, x, y, r })
   }
 
