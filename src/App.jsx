@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import SideNav from './components/SideNav'
+import SoundHint from './components/SoundHint'
 import CustomCursor from './components/CustomCursor'
 import SceneBackground from './components/SceneBackground'
 import { CursorProvider } from './lib/CursorContext'
@@ -22,6 +23,7 @@ export default function App() {
         <CustomCursor />
         <SideNav />
         <LanguageToggle />
+        <SoundHint />
         <main>
           <Amanda />
           <About />

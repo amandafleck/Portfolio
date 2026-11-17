@@ -113,7 +113,7 @@ export default function Amanda() {
 
 
   return (
-    <section id="amanda" ref={containerRef} className="relative h-[190vh] md:h-[210vh]">
+    <section id="amanda" ref={containerRef} className="relative h-[240vh] md:h-[260vh]">
       <h1 className="sr-only">Amanda Fleck — Full Stack Developer</h1>
 
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden">

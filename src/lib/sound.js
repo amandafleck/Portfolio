@@ -20,7 +20,7 @@ function tryResume() {
 
 if (typeof window !== 'undefined') {
   tryResume()
-  const events = ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart', 'scroll']
+  const events = ['pointerdown', 'pointerup', 'mousedown', 'click', 'keydown', 'touchend', 'pointermove', 'wheel', 'touchstart', 'scroll']
   events.forEach((name) =>
     window.addEventListener(name, tryResume, { passive: true, capture: true })
   )
@@ -55,4 +55,18 @@ export function playKeyTick() {
 export function playClick() {
   blip({ type: 'triangle', freq: 1400, volume: 0.12, duration: 0.035 })
   blip({ type: 'sine', freq: 180, volume: 0.1, duration: 0.08 })
+}
+
+export function unlockAudio() {
+  const c = getCtx()
+  return c ? c.resume().catch(() => {}) : Promise.resolve()
+}
+
+export function subscribeAudioLocked(callback) {
+  const c = getCtx()
+  if (!c) return () => {}
+  const update = () => callback(c.state !== 'running')
+  update()
+  c.addEventListener('statechange', update)
+  return () => c.removeEventListener('statechange', update)
 }

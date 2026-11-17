@@ -44,7 +44,8 @@ export function ContactProvider({ children }) {
       if (!data.success) throw new Error(data.message)
       setStatus("sent")
       setForm({ name: "", email: "", message: "" })
-    } catch {
+    } catch (error) {
+      console.error("Web3Forms:", error.message, "| chave configurada:", Boolean(import.meta.env.VITE_WEB3FORMS_KEY))
       setStatus("error")
     }
   }

@@ -43,8 +43,8 @@ const FORMACAO = [
   {
     key: 'ingles',
     title: 'Inglês',
-    period: '2021 — 2023',
-    lines: ['Intermediário', 'Senac — Taquara'],
+    period: '2021 — 2024',
+    lines: ['Upper-Intermediate | Certificado de Fluência Senac', 'Senac — Taquara'],
     from: { y: 60 },
   },
   {
@@ -91,9 +91,10 @@ const FOLDERS = [
     key: 'tecnico',
     num: '01',
     label: 'Técnico em Informática',
-    subtitle: 'Ensino Médio Integrado',
+    subtitle: 'Técnico em Informática integrado ao Ensino Médio',
     period: '2022 — 2024',
     lines: ['Escola Estadual Monteiro Lobato'],
+    links: [],
     tab: 1,
     fill: '#c3d0ff',
     ink: '#0a1440',
@@ -102,9 +103,10 @@ const FOLDERS = [
     key: 'ingles',
     num: '02',
     label: 'Inglês',
-    subtitle: 'Intermediário',
-    period: '2021 — 2023',
+    subtitle: 'Upper-Intermediate | Certificado de Fluência Senac',
+    period: '2021 — 2024',
     lines: ['Senac — Taquara'],
+    links: [],
     tab: 0.15,
     fill: '#d8e0ff',
     ink: '#0a1440',
@@ -116,17 +118,19 @@ const FOLDERS = [
     subtitle: 'Certified Tester Foundation Level — BSTQB',
     period: '2025',
     lines: ['BSTQB'],
+    links: [],
     tab: 0.8,
     fill: '#eaefff',
     ink: '#0a1440',
   },
   {
-    key: 'udemy',
+    key: 'eventos',
     num: '04',
-    label: 'Cursos',
-    subtitle: 'Angular 19 e React 18 / 19 — Udemy',
-    period: '2026',
-    lines: ['Angular 19, Curso Completo — Douglas Souza', 'Curso de React 18 / 19'],
+    label: 'Hackatime & Palestra',
+    subtitle: 'Hackatime Taquara · 2º lugar',
+    period: '',
+    lines: ['Palestrante no Elas na TI'],
+    links: [],
     tab: 0.4,
     fill: '#f4f6ff',
     ink: '#0a1440',
@@ -365,9 +369,12 @@ function FormacaoStack({ folders }) {
                       </p>
                     </div>
                     {/* aparece quando a pasta sobe (hover/toque) */}
-                    <p className="mt-1 truncate text-[11px] opacity-70">
-                      {folder.lines.map(t).join(' · ')}
-                    </p>
+                    <div className="mt-1 flex items-center justify-between gap-3">
+                      <p className="truncate text-[11px] opacity-70">
+                        {folder.lines.map(t).join(' · ')}
+                      </p>
+                      <FolderLinks links={folder.links} />
+                    </div>
                   </div>
                 )}
               </motion.div>
@@ -376,6 +383,25 @@ function FormacaoStack({ folders }) {
         })}
     </div>
   )
+}
+
+function FolderLinks({ links = [] }) {
+  const { t } = useLanguage()
+
+  return links
+    .filter((link) => link.href)
+    .map((link) => (
+      <a
+        key={link.href}
+        href={link.href}
+        target="_blank"
+        rel="noreferrer"
+        onClick={(event) => event.stopPropagation()}
+        className="shrink-0 text-[10px] font-bold uppercase tracking-[0.15em] underline underline-offset-2"
+      >
+        {t(link.label)}
+      </a>
+    ))
 }
 
 // conteúdo da pasta da frente — o "Service Files" da referência

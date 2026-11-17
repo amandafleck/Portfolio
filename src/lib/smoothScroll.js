@@ -10,6 +10,13 @@ export function startSmoothScroll() {
     lerp: 0.055,
     wheelMultiplier: 0.45,
     smoothWheel: true,
+    virtualScroll: (data) => {
+      if (!data.deltaY) return
+      const direction = Math.sign(data.deltaY)
+      const lead = (lenis.targetScroll - lenis.animatedScroll) * direction
+      const room = Math.max(1, window.innerHeight * 0.45 - lead)
+      data.deltaY = direction * Math.min(Math.abs(data.deltaY), room)
+    },
   })
 
   let raf
