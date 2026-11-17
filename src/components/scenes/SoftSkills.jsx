@@ -127,9 +127,9 @@ const FOLDERS = [
     key: 'eventos',
     num: '04',
     label: 'Hackatime & Palestra',
-    subtitle: 'Hackatime Taquara · 2º lugar',
+    subtitle: 'Hackatime Taquara · 2º lugar | Palestrante no Elas na TI',
     period: '',
-    lines: ['Palestrante no Elas na TI'],
+    lines: [],
     links: [],
     tab: 0.4,
     fill: '#f4f6ff',
@@ -232,7 +232,12 @@ export default function SoftSkills() {
           ))}
         </div>
         */}
-          <FormacaoStack folders={FOLDERS} />
+          <div className="hidden w-full md:block">
+            <FormacaoStack folders={FOLDERS} />
+          </div>
+          <div className="w-full md:hidden">
+            <FormacaoCarousel folders={FOLDERS} />
+          </div>
 
           <div className="mt-2 flex flex-col items-center gap-3 lg:mt-6">
             <h2 className="font-display text-sm uppercase tracking-[0.3em] text-[var(--text-muted)]">
@@ -317,7 +322,8 @@ function FormacaoStack({ folders }) {
               <motion.div
                 animate={{ y: isLifted ? -LIFT : 0 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                onMouseEnter={() => {
+                onPointerEnter={(event) => {
+                  if (event.pointerType !== 'mouse') return
                   setLifted(index)
                   // na capa (bacharelado) o cursor fica normal; nas de trás ele diminui
                   if (isFront) clearScale()
@@ -381,6 +387,70 @@ function FormacaoStack({ folders }) {
             </motion.div>
           )
         })}
+    </div>
+  )
+}
+
+function FormacaoCarousel({ folders }) {
+  const { t } = useLanguage()
+  const [open, setOpen] = useState(null)
+
+  return (
+    <div className="-mx-4 flex snap-x snap-mandatory items-end gap-4 overflow-x-auto px-[11%] pb-2 pt-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6">
+      {folders.map((folder) => {
+        const isOpen = open === folder.key
+        const details = folder.lines.map(t)
+
+        return (
+          <motion.div
+            key={folder.key}
+            role="button"
+            tabIndex={0}
+            layout="position"
+            onClick={() => setOpen(isOpen ? null : folder.key)}
+            aria-expanded={isOpen}
+            className="relative w-[78%] shrink-0 snap-center text-left"
+            style={{ color: folder.ink }}
+          >
+            <motion.div
+              animate={{ y: isOpen ? -10 : 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="relative rounded-2xl rounded-tl-none border px-5 py-5"
+              style={{ background: folder.fill, borderColor: 'rgba(5,5,6,0.35)' }}
+            >
+              <span
+                className="absolute -top-7 whitespace-nowrap left-5 flex items-center gap-2 rounded-t-xl border border-b-0 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.1em]"
+                style={{ background: folder.fill, borderColor: 'rgba(5,5,6,0.35)' }}
+              >
+                <span className="opacity-60">[{folder.num}]</span>
+                {t(folder.label)}
+              </span>
+              <p className="text-sm font-bold leading-snug">{t(folder.subtitle)}</p>
+              {folder.period && (
+                <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.2em] opacity-60">
+                  {folder.period}
+                </p>
+              )}
+
+              <motion.div
+                initial={false}
+                animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                <div className="flex flex-col gap-2 pt-3 text-xs opacity-80">
+                  {details.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                  <div className="flex flex-wrap gap-3">
+                    <FolderLinks links={folder.links} />
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )
+      })}
     </div>
   )
 }

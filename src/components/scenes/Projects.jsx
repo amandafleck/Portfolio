@@ -9,15 +9,6 @@ import { useLanguage } from '../../lib/LanguageContext'
 // de forma genérica).
 const PROJECTS = [
   {
-    title: 'Next.js PopularMovies',
-    description:
-      'Aplicação simples em Next.js que lista os filmes populares usando uma API GraphQL. Exibe informações como título, sinopse, data de lançamento, diretor e pôster. O projeto é responsivo e possui pequenas animações. Tecnologias: Next.js, TypeScript, TailwindCSS, GraphQL para busca de dados na API e Jest (opcional) para testes automatizados.',
-    tags: ['Next.js', 'TypeScript', 'TailwindCSS', 'GraphQL', 'Jest'],
-    github: 'https://github.com/amandafleck/PopularMovies',
-    demo: 'https://popular-movies-bab7.vercel.app',
-    color: '#8b5cf6',
-  },
-  {
     title: 'Rota — Planejador de viagens',
     description:
       'Base inicial do planejador de viagens com React, Leaflet, Node/Express e Geoapify. Nesta etapa, os lugares salvos ficam apenas na memória do navegador; não há banco de dados conectado. Funcionalidades: pesquisa de destino via Geoapify Geocoding API; busca de atrações, restaurantes, hotéis e parques próximos via Places API; exibição de descrição e endereço para cada lugar; salvamento de favoritos e marcação independente de vários lugares no mapa; mapa interativo com marcadores dos resultados; inclusão de vários pontos manuais clicando no mapa e dando um nome.',
@@ -25,6 +16,15 @@ const PROJECTS = [
     github: 'https://github.com/amandafleck/ProjectMaps',
     demo: 'https://projectmaps.vercel.app',
     color: '#2f6bff',
+  },
+  {
+    title: 'Next.js PopularMovies',
+    description:
+      'Aplicação simples em Next.js que lista os filmes populares usando uma API GraphQL. Exibe informações como título, sinopse, data de lançamento, diretor e pôster. O projeto é responsivo e possui pequenas animações. Tecnologias: Next.js, TypeScript, TailwindCSS, GraphQL para busca de dados na API e Jest (opcional) para testes automatizados.',
+    tags: ['Next.js', 'TypeScript', 'TailwindCSS', 'GraphQL', 'Jest'],
+    github: 'https://github.com/amandafleck/PopularMovies',
+    demo: 'https://popular-movies-bab7.vercel.app',
+    color: '#8b5cf6',
   },
   {
     title: 'GraphQL API',
@@ -44,7 +44,7 @@ const PROJECTS = [
   },
 ]
 
-const LINKEDIN_URL = 'https://www.linkedin.com/in/amanda-fleck-3b14bb340/'
+const GITHUB_URL = 'https://github.com/amandafleck'
 
 const pad = (i) => String(i + 1).padStart(2, '0')
 
@@ -130,12 +130,12 @@ export default function Projects() {
         </div>
 
         <a
-          href={LINKEDIN_URL}
+          href={GITHUB_URL}
           target="_blank"
           rel="noreferrer"
           className="absolute right-28 hidden rounded-full border border-[var(--text)] px-5 py-1.5 text-sm transition-colors hover:bg-[var(--text)] hover:text-[var(--bg)] lg:inline-block"
         >
-          linkedin
+          github
         </a>
       </header>
 
@@ -196,14 +196,15 @@ function ProjectRow({ project, index, registerRef }) {
         </p>
       </div>
 
-      <div className="h-64 sm:h-72 md:col-start-2 xl:col-start-auto xl:h-[min(46svh,24rem)] xl:min-h-64">
-        <ProjectPanel project={project} index={index} />
+      <div className="md:col-start-2 xl:col-start-auto xl:pt-3">
+        <ProjectItems project={project} />
       </div>
+
     </div>
   )
 }
 
-function ProjectPanel({ project, index }) {
+function ProjectItems({ project }) {
   const { t } = useLanguage()
   const [hovered, setHovered] = useState(false)
 
@@ -214,87 +215,56 @@ function ProjectPanel({ project, index }) {
   useEffect(() => () => clearColorRef.current?.(), [])
 
   return (
-    <motion.div
-      onHoverStart={() => {
+    <div
+      onMouseEnter={() => {
         setHovered(true)
         setColor(project.color)
       }}
-      onHoverEnd={() => {
+      onMouseLeave={() => {
         setHovered(false)
         clearColor()
       }}
-      animate={{ scale: hovered ? 1.03 : 1 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl border transition-colors duration-500"
-      style={{
-        borderColor: hovered ? project.color : 'rgba(255,255,255,0.12)',
-        backgroundColor: hovered ? `${project.color}26` : 'rgba(255,255,255,0.05)',
-      }}
+      className="flex flex-col gap-4 md:ml-5 xl:ml-0"
     >
-      <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
-        <span className="h-2.5 w-2.5 rounded-full bg-white/25" />
-        <span className="h-2.5 w-2.5 rounded-full bg-white/25" />
-        <span
-          className="h-2.5 w-2.5 rounded-full transition-colors duration-500"
-          style={{ backgroundColor: hovered ? project.color : 'rgba(255,255,255,0.25)' }}
-        />
-        <span className="ml-2 min-w-0 truncate text-[11px] text-[var(--text-muted)]">
-          projeto-{pad(index)}.stack
-        </span>
-      </div>
+      <ul className="flex flex-wrap gap-2">
+        {project.tags.map((tag) => (
+          <li
+            key={tag}
+            className="rounded-full border px-3 py-1 text-xs transition-colors duration-500"
+            style={{
+              borderColor: hovered ? project.color : 'rgba(255,255,255,0.25)',
+              color: hovered ? '#fff' : 'rgba(245,246,248,0.8)',
+            }}
+          >
+            {t(tag)}
+          </li>
+        ))}
+      </ul>
 
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -bottom-6 right-2 select-none font-display text-[9rem] font-black leading-none transition-colors duration-500"
-        style={{ color: hovered ? `${project.color}55` : 'rgba(255,255,255,0.05)' }}
-      >
-        {pad(index)}
-      </span>
-
-      <div className="relative flex flex-1 flex-col justify-center gap-3 px-5 py-4 sm:px-6">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--text-muted)]">
-          {t('Tecnologias')}
-        </p>
-        <ul className="flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <li
-              key={tag}
-              className="rounded-full border px-3 py-1 text-xs transition-colors duration-500"
-              style={{
-                borderColor: hovered ? project.color : 'rgba(255,255,255,0.25)',
-                color: hovered ? '#fff' : 'rgba(245,246,248,0.8)',
-              }}
+      {(project.github || project.demo) && (
+        <div className="flex flex-wrap gap-2">
+          {project.demo && (
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-white/70 bg-white px-4 py-1.5 text-xs font-bold text-[#050506] transition-opacity hover:opacity-80"
             >
-              {t(tag)}
-            </li>
-          ))}
-        </ul>
-
-        {(project.github || project.demo) && (
-          <div className="relative mt-1 flex flex-wrap gap-2">
-            {project.demo && (
-              <a
-                href={project.demo}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-white/70 bg-white px-4 py-1.5 text-xs font-bold text-[#050506] transition-opacity hover:opacity-80"
-              >
-                {t('Ver online ↗')}
-              </a>
-            )}
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-white/70 px-4 py-1.5 text-xs font-bold text-white transition-colors hover:bg-white hover:text-[#050506]"
-              >
-                GitHub ↗
-              </a>
-            )}
-          </div>
-        )}
-      </div>
-    </motion.div>
+              {t('Ver online ↗')}
+            </a>
+          )}
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-white/70 px-4 py-1.5 text-xs font-bold text-white transition-colors hover:bg-white hover:text-[#050506]"
+            >
+              GitHub ↗
+            </a>
+          )}
+        </div>
+      )}
+    </div>
   )
 }

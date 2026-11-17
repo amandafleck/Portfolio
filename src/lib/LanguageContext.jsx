@@ -33,6 +33,7 @@ const translations = {
   'Técnico em Informática': 'IT Technician',
   'Técnico em Informática integrado ao Ensino Médio': 'Technical High School Program in Information Technology',
   'Hackatime & Palestra': 'Hackatime & Talk',
+  'Hackatime Taquara · 2º lugar | Palestrante no Elas na TI': 'Hackatime Taquara · 2nd place | Speaker at Elas na TI',
   'Ver certificado ↗': 'View certificate ↗',
   'Escola Estadual Monteiro Lobato': 'Monteiro Lobato State School',
   Intermediário: 'Intermediate',
