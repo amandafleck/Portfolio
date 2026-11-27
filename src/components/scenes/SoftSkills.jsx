@@ -17,7 +17,7 @@ const SKILLS = [
 const TECH_CATEGORIES = [
   {
     title: 'Front-end',
-    items: ['JavaScript', 'TypeScript', 'React.js', 'Next.js', 'Angular', 'React Native'],
+    items: ['JavaScript', 'TypeScript', 'React.js', 'Next.js', 'React Native'],
   },
   { title: 'Estilos', items: ['HTML', 'CSS', 'Tailwind'] },
   { title: 'Back-end', items: ['Node.js', 'Python', 'Java', 'GraphQL', 'Stripe'] },
@@ -44,7 +44,7 @@ const FORMACAO = [
     key: 'ingles',
     title: 'Inglês',
     period: '2021 — 2024',
-    lines: ['Upper-Intermediate | Certificado de Fluência Senac', 'Senac — Taquara'],
+    lines: ['Intermediário | Certificado de Fluência Senac', 'Senac — Taquara'],
     from: { y: 60 },
   },
   {
@@ -82,7 +82,7 @@ const FOLDERS = [
     label: 'FACCAT',
     subtitle: 'Bacharelado em Sistemas de Informação',
     period: '2025 — 2030',
-    lines: ['Faculdades Integradas de Taquara', '3º semestre'],
+    lines: ['Faculdades Integradas de Taquara', '4º semestre'],
     tab: 0,
     fill: '#14205e',
     ink: '#f5f6f8',
@@ -103,7 +103,7 @@ const FOLDERS = [
     key: 'ingles',
     num: '02',
     label: 'Inglês',
-    subtitle: 'Upper-Intermediate | Certificado de Fluência Senac',
+    subtitle: 'Intermediário | Certificado de Fluência Senac',
     period: '2021 — 2024',
     lines: ['Senac — Taquara'],
     links: [],
